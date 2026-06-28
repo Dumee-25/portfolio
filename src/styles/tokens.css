@@ -1,0 +1,73 @@
+/*
+  Token system — design report §4.
+  Restrained paper-and-ink with a single instrument-panel accent.
+  Every color and size on the site derives from here, not from defaults.
+*/
+:root {
+  /* ---- Palette ---- */
+  --ink: #1a1a17; /* near-black text, slightly warm */
+  --paper: #fbfaf7; /* off-white, lighter/cooler than the cliché cream */
+  --rule: #d8d4cc; /* hairlines, table borders, the operational-profile grid */
+  --muted: #6b6660; /* metadata, captions, monospace labels */
+  --signal: #2f5d50; /* one deep instrument green — live/interactive state only */
+  --signal-tint: #eaf1ee; /* signal at low strength, for fills */
+  --flag: #9a3b3b; /* the color for honesty — limitations / failure modes only */
+  --flag-tint: #f6eded; /* flag at low strength, for fills */
+  --paper-2: #f3f1ea; /* faintly recessed panels */
+
+  /* ---- Type ---- */
+  --font-prose: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', ui-monospace, 'Cascadia Code',
+    Menlo, Consolas, monospace;
+
+  /* Type scale — hierarchy from scale, not decoration */
+  --step--1: clamp(0.83rem, 0.8rem + 0.1vw, 0.89rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
+  --step-1: clamp(1.2rem, 1.12rem + 0.4vw, 1.42rem);
+  --step-2: clamp(1.44rem, 1.3rem + 0.7vw, 1.8rem);
+  --step-3: clamp(1.73rem, 1.5rem + 1.1vw, 2.28rem);
+  --step-4: clamp(2.07rem, 1.7rem + 1.8vw, 2.9rem);
+
+  /* ---- Space ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+
+  /* ---- Layout ---- */
+  --measure: 64ch; /* the reading column */
+  --rail: 16rem; /* the persistent margin rail */
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --radius: 2px; /* lab-notebook restraint, not zero (that's an AI-default look) */
+
+  --border-hair: 1px solid var(--rule);
+
+  /* ---- Depth (restrained — paper lifting slightly off paper) ---- */
+  --shadow-1: 0 1px 2px rgba(26, 26, 23, 0.04), 0 2px 8px rgba(26, 26, 23, 0.04);
+  --shadow-2: 0 2px 4px rgba(26, 26, 23, 0.05), 0 8px 24px rgba(26, 26, 23, 0.07);
+
+  /* ---- Engineering-paper grid (very subtle, evokes a lab notebook) ---- */
+  --grid-line: rgba(47, 93, 80, 0.05);
+  --grid-size: 26px;
+}
+
+/* Dark theme — the same paper-and-ink system, inverted and kept warm. */
+:root[data-theme='dark'] {
+  --ink: #ece9e1;
+  --paper: #15140f;
+  --paper-2: #1e1d17;
+  --rule: #3a372f;
+  --muted: #9b958a;
+  --signal: #6fb39a;
+  --signal-tint: #1d2a25;
+  --flag: #cf7e7e;
+  --flag-tint: #2a1d1d;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 2px 4px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.4);
+  --grid-line: rgba(111, 179, 154, 0.06);
+}

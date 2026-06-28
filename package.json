@@ -1,0 +1,20 @@
+{
+  "name": "dumindu-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Portfolio for Dumindu Kumarapeli — an evidence-machine that lives by the standard it preaches.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@fontsource-variable/source-serif-4": "^5.2.9",
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "astro": "^7.0.3",
+    "typescript": "^5.7.0"
+  }
+}

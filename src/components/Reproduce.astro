@@ -1,0 +1,107 @@
+---
+// The reproduce affordance with a fixed shape (design report §1.3):
+// exact command, environment, hardware, expected runtime, expected output.
+// The command is plain selectable text — the copy button is a no-JS-safe
+// progressive enhancement; nothing here depends on JavaScript to be usable.
+interface Props {
+  command: string;
+  environment?: string;
+  runtime: string;
+  expectedOutput: string;
+}
+const { command, environment, runtime, expectedOutput } = Astro.props;
+---
+
+<section class="repro" aria-label="Reproduce">
+  <p class="repro__title label">Reproduce</p>
+  <div class="repro__cmd">
+    <pre><code>{command}</code></pre>
+    <button class="repro__copy" type="button" data-copy={command} hidden>copy</button>
+  </div>
+  <dl class="repro__meta">
+    {environment && (<><dt>env</dt><dd>{environment}</dd></>)}
+    <dt>runtime</dt><dd>{runtime}</dd>
+    <dt>expected</dt><dd>{expectedOutput}</dd>
+  </dl>
+</section>
+
+<script>
+  // Enhancement only: reveal copy buttons when clipboard is available.
+  document.querySelectorAll<HTMLButtonElement>('.repro__copy[data-copy]').forEach((btn) => {
+    if (!navigator.clipboard) return;
+    btn.hidden = false;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+        const prev = btn.textContent;
+        btn.textContent = 'copied';
+        setTimeout(() => (btn.textContent = prev), 1200);
+      } catch {
+        /* clipboard blocked — the command is still selectable above */
+      }
+    });
+  });
+</script>
+
+<style>
+  .repro {
+    border: var(--border-hair);
+    border-radius: var(--radius);
+    margin-block: var(--space-5);
+    overflow: hidden;
+  }
+  .repro__title {
+    padding: var(--space-3) var(--space-4);
+    background: var(--paper-2);
+    border-bottom: var(--border-hair);
+    margin: 0;
+  }
+  .repro__cmd {
+    position: relative;
+    background: #1a1a17; /* fixed terminal black in both themes */
+  }
+  .repro__cmd pre {
+    margin: 0;
+    padding: var(--space-4);
+    overflow-x: auto;
+  }
+  .repro__cmd code {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: #fbfaf7;
+    line-height: 1.7;
+  }
+  .repro__copy {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: #fbfaf7;
+    background: transparent;
+    border: 1px solid rgba(251, 250, 247, 0.35);
+    border-radius: var(--radius);
+    padding: 0.15em 0.6em;
+    cursor: pointer;
+  }
+  .repro__copy:hover {
+    background: rgba(251, 250, 247, 0.12);
+  }
+  .repro__meta {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    margin: 0;
+  }
+  .repro__meta dt {
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .repro__meta dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+</style>

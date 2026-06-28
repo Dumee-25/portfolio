@@ -1,0 +1,471 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { site, stack } from '../site';
+import portrait from '../assets/dp-portrait.jpg';
+
+const systems = (await getCollection('systems')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const inquiry = (await getCollection('inquiry')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<Base
+  title={`${site.name} — engineer-researcher`}
+  description="Dumindu Kumarapeli — Data Science undergraduate working on LLM/RAG & agentic systems, applied ML, and computer vision."
+>
+  <!-- Hero: an argument that hands over proof — with a face, but not a "Hi, I'm —". -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <p class="hero__kicker label">
+          <span class="dot" aria-hidden="true"></span>{site.role} · NSBM Green University
+        </p>
+        <h1 class="hero__lede">
+          I build research prototypes that <span class="hl">ship</span> — full
+          pipelines from data generation through deployment.
+        </h1>
+        <p class="hero__std">
+          I work across the full ML lifecycle — retrieval-augmented and agentic
+          LLM systems, applied modeling and statistics, and computer vision —
+          plus the backend and frontend needed to deploy them. Most of it runs
+          on a 6&nbsp;GB consumer GPU.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="/systems">View the systems →</a>
+          <a class="btn" href={site.cv} download>Download CV</a>
+          <a class="btn" href={`mailto:${site.email}`}>Email me</a>
+        </div>
+        <p class="hero__exploring meta">
+          Currently exploring: CUDA acceleration · sequence models (RNN/LSTM) ·
+          production LLM/RAG pipelines.
+        </p>
+      </div>
+
+      <figure class="hero__portrait">
+        <Image
+          src={portrait}
+          alt={`${site.name}`}
+          widths={[280, 560]}
+          sizes="(min-width: 60rem) 280px, 70vw"
+          loading="eager"
+        />
+        <figcaption class="meta">
+          <strong>{site.name}</strong><br />Presenting at Data Storm 7.0
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 01 Systems -->
+  <section class="band">
+    <div class="wrap section">
+      <div class="section__head">
+        <h2 id="systems"><span class="section__no">01</span> Systems</h2>
+        <a class="section__more" href="/systems">all systems →</a>
+      </div>
+      <p class="section__intro">Things that run — built end to end, from data to deployment.</p>
+      <ul class="cards">
+        {
+          systems.map((s) => (
+            <li class="card">
+              <a class="card__hit" href={`/systems/${s.id}`} aria-label={s.data.title} />
+              <div class="card__top">
+                <h3 class="card__title">
+                  {s.data.icon && <span aria-hidden="true">{s.data.icon} </span>}
+                  {s.data.title}
+                </h3>
+                <span class={`pill pill--${s.data.status}`}>{s.data.status}</span>
+              </div>
+              <p class="card__summary">{s.data.summary}</p>
+              <p class="card__flag">
+                <span class="card__flag-label">does not</span> {s.data.limitations[0]}
+              </p>
+              <ul class="chips chips--sm">
+                {s.data.stack.slice(0, 5).map((t) => (<li>{t}</li>))}
+              </ul>
+              <span class="card__link">Read the case study →</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 02 Inquiry -->
+  <section class="wrap section">
+    <div class="section__head">
+      <h2 id="inquiry"><span class="section__no">02</span> Inquiry</h2>
+      <a class="section__more" href="/inquiry">all inquiry →</a>
+    </div>
+    <p class="section__intro">Questions asked — across epidemiological forecasting, medical AI, and reinforcement learning.</p>
+    <ul class="inq-list">
+      {
+        inquiry.map((q) => (
+          <li>
+            <a href={`/inquiry/${q.id}`}>{q.data.title}</a>
+            <span class={`pill pill--${q.data.status}`}>{q.data.status}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- 03 Stack -->
+  <section class="band">
+    <div class="wrap section">
+      <div class="section__head">
+        <h2 id="stack"><span class="section__no">03</span> What I work with</h2>
+      </div>
+      <p class="section__intro">The tools I reach for, grouped by where they fit.</p>
+      <div class="stackgrid">
+        {
+          stack.map((g) => (
+            <div class="stackgroup">
+              <p class="stackgroup__name label">{g.group}</p>
+              <ul class="chips">
+                {g.items.map((t) => (<li>{t}</li>))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Contact -->
+  <section class="wrap section">
+    <div class="section__head">
+      <h2 id="contact"><span class="section__no">04</span> Contact</h2>
+    </div>
+    <p class="contact__text">
+      {site.affiliation}. {site.org}. My research interests span medical AI,
+      epidemiological forecasting, and reinforcement learning. Get in touch:
+    </p>
+    <div class="contact__links">
+      <a class="btn btn--primary" href={`mailto:${site.email}`}>{site.email}</a>
+      <a class="btn" href={site.cv} download>Download CV</a>
+      <a class="btn" href={site.linkedin} rel="me">LinkedIn</a>
+      <a class="btn" href={site.github} rel="me">GitHub</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---- Hero ---- */
+  .hero {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+    border-bottom: var(--border-hair);
+  }
+  .hero__grid {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-8) var(--space-7);
+    align-items: center;
+  }
+  @media (min-width: 60rem) {
+    .hero__grid {
+      grid-template-columns: 1fr 280px;
+      gap: var(--space-8);
+    }
+  }
+  .hero__kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-bottom: var(--space-4);
+  }
+  .dot {
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 0 3px var(--signal-tint);
+  }
+  .hero__lede {
+    max-width: 18ch;
+    font-size: var(--step-4);
+  }
+  .hl {
+    color: var(--signal);
+    font-style: italic;
+  }
+  .hero__std {
+    max-width: 54ch;
+    margin-top: var(--space-5);
+    color: var(--ink);
+  }
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .hero__exploring {
+    max-width: 54ch;
+    margin-top: var(--space-5);
+  }
+
+  .hero__portrait {
+    margin: 0;
+    justify-self: start;
+    width: 240px;
+    max-width: 70vw;
+  }
+  @media (min-width: 60rem) {
+    .hero__portrait {
+      width: 280px;
+      justify-self: end;
+    }
+  }
+  .hero__portrait img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center top;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-2);
+    filter: grayscale(0.1);
+  }
+  .hero__portrait figcaption {
+    margin-top: var(--space-3);
+    line-height: 1.4;
+  }
+
+  /* ---- Banded sections for rhythm ---- */
+  .band {
+    background: var(--paper-2);
+    border-block: var(--border-hair);
+  }
+  .section {
+    padding-block: var(--space-7);
+  }
+  .section__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+  .section__head h2 {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .section__no {
+    font-family: var(--font-mono);
+    font-size: var(--step-0);
+    color: var(--signal);
+    font-weight: 500;
+  }
+  .section__more,
+  .card__link {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-decoration: none;
+    color: var(--signal);
+    white-space: nowrap;
+  }
+  .section__more:hover {
+    text-decoration: underline;
+  }
+  .section__intro {
+    max-width: var(--measure);
+    color: var(--muted);
+    margin-top: var(--space-2);
+  }
+
+  /* ---- Cards ---- */
+  .cards {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 48rem) {
+    .cards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .card {
+    position: relative;
+    border: var(--border-hair);
+    border-top: 3px solid var(--signal);
+    border-radius: var(--radius);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background: var(--paper);
+    box-shadow: var(--shadow-1);
+    transition: box-shadow 0.18s ease, transform 0.18s ease;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-2);
+    transform: translateY(-2px);
+  }
+  /* whole-card click target without nesting links */
+  .card__hit {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .card__top {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .card__title {
+    margin: 0;
+    font-size: var(--step-1);
+  }
+  .card__summary {
+    color: var(--ink);
+  }
+  .card__flag {
+    font-size: var(--step--1);
+    color: var(--flag);
+    background: var(--flag-tint);
+    border-left: 2px solid var(--flag);
+    border-radius: var(--radius);
+    padding: var(--space-2) var(--space-3);
+  }
+  .card__flag-label {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-right: 0.4em;
+  }
+  .card__link {
+    margin-top: auto;
+    position: relative;
+    z-index: 2;
+  }
+  .card:hover .card__link {
+    text-decoration: underline;
+  }
+
+  /* ---- Chips ---- */
+  .chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+  }
+  .chips li {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--ink);
+    border: 1px solid color-mix(in srgb, var(--muted) 45%, var(--rule));
+    border-radius: var(--radius);
+    padding: 0.2em 0.6em;
+    background: var(--paper-2);
+  }
+  /* a quiet accent so the tools read as "live" without shouting */
+  .stackgroup .chips li {
+    border-left: 2px solid color-mix(in srgb, var(--signal) 55%, var(--rule));
+  }
+  .chips--sm li {
+    font-size: 0.72rem;
+    font-weight: 400;
+  }
+
+  /* ---- Inquiry list ---- */
+  .inq-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+  }
+  .inq-list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    border-bottom: var(--border-hair);
+  }
+  .inq-list li:first-child {
+    border-top: var(--border-hair);
+  }
+  .inq-list a {
+    text-decoration: none;
+    font-size: var(--step-0);
+  }
+  .inq-list a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+  }
+
+  /* ---- Stack grid ---- */
+  .stackgrid {
+    display: grid;
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 40rem) {
+    .stackgrid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 64rem) {
+    .stackgrid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .stackgroup__name {
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--rule);
+  }
+
+  /* ---- Contact ---- */
+  .contact__text {
+    max-width: var(--measure);
+    margin-top: var(--space-3);
+  }
+  .contact__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+
+  /* ---- Buttons ---- */
+  .btn {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-decoration: none;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: var(--radius);
+    padding: 0.5em 1em;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .btn:hover {
+    background: var(--paper-2);
+  }
+  .btn--primary {
+    background: var(--signal);
+    border-color: var(--signal);
+    color: var(--paper);
+  }
+  .btn--primary:hover {
+    background: color-mix(in srgb, var(--signal) 88%, black);
+    color: var(--paper);
+  }
+</style>

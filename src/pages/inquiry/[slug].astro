@@ -1,0 +1,125 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const inquiry = await getCollection('inquiry');
+  return inquiry.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const verified = d.last_verified.toLocaleDateString('en-CA');
+---
+
+<Base title={`${d.title} — Dumindu Kumarapeli`} description={d.summary}>
+  <article class="wrap doc">
+    <div class="doc__body prose">
+      <p class="back"><a href="/inquiry">← Inquiry</a></p>
+      <h1>{d.title}</h1>
+      <p class="summary">{d.summary}</p>
+
+      <Content />
+
+      <!-- The honest "what we still don't know" — first-class, not a footnote -->
+      <section class="open" aria-label="Open questions">
+        <h2>What we still don't know</h2>
+        <ul>
+          {d.open_questions.map((q) => <li>{q}</li>)}
+        </ul>
+      </section>
+    </div>
+
+    <aside class="doc__rail" aria-label="Details">
+      <dl class="rail">
+        <p class="rail__title label">Details</p>
+        <div class="rail__row"><dt>status</dt><dd><span class={`pill pill--${d.status}`}>{d.status}</span></dd></div>
+        {d.venue && (<div class="rail__row"><dt>venue</dt><dd>{d.venue}</dd></div>)}
+        {d.method && (<div class="rail__row"><dt>method</dt><dd>{d.method}</dd></div>)}
+        <div class="rail__row"><dt>verified</dt><dd>{verified}</dd></div>
+        {
+          d.receipts.length > 0 && (
+            <div class="rail__row">
+              <dt>receipts</dt>
+              <dd>
+                <ul>
+                  {d.receipts.map((r) => (<li>↳ <a href={r.url} rel="noopener">{r.label}</a></li>))}
+                </ul>
+              </dd>
+            </div>
+          )
+        }
+      </dl>
+    </aside>
+  </article>
+</Base>
+
+<style>
+  .back a {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-decoration: none;
+    color: var(--muted);
+  }
+  .back a:hover {
+    color: var(--ink);
+  }
+  h1 {
+    margin-top: var(--space-3);
+  }
+  .summary {
+    font-size: var(--step-1);
+    margin-top: var(--space-4);
+  }
+  .open {
+    border-top: var(--border-hair);
+    margin-top: var(--space-6);
+  }
+  .open h2 {
+    font-size: var(--step-1);
+  }
+
+  .rail {
+    border: var(--border-hair);
+    border-radius: var(--radius);
+    background: var(--paper);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    margin: 0;
+  }
+  .rail__title {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-hair);
+    background: var(--paper-2);
+    margin: 0;
+  }
+  .rail__row {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    border-bottom: var(--border-hair);
+  }
+  .rail__row:last-child {
+    border-bottom: none;
+  }
+  .rail dt {
+    color: var(--muted);
+  }
+  .rail dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  .rail dd ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .rail a {
+    color: var(--signal);
+  }
+</style>

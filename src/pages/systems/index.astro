@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const systems = (await getCollection('systems')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<Base
+  title="Systems — Dumindu Kumarapeli"
+  description="Things that run: operational profiles, architecture, and reproduce blocks. Each system states what it does not do."
+>
+  <div class="wrap section">
+    <h1>Systems</h1>
+    <p class="lede">
+      Things that run. Each has an architecture, an operational profile, and a
+      reproduce block.
+    </p>
+
+    <ul class="syslist">
+      {
+        systems.map((s) => (
+          <li class="sysrow">
+            <div class="sysrow__main">
+              <h2 class="sysrow__title">
+                <a href={`/systems/${s.id}`}>
+                  {s.data.icon && <span aria-hidden="true">{s.data.icon} </span>}
+                  {s.data.title}
+                </a>
+              </h2>
+              <p>{s.data.summary}</p>
+              <p class="sysrow__flag">
+                <span class="label">does not</span> {s.data.limitations[0]}
+              </p>
+              <p class="meta">{s.data.stack.join(' · ')}</p>
+            </div>
+            <div class="sysrow__aside">
+              <span class={`pill pill--${s.data.status}`}>{s.data.status}</span>
+              <p class="meta">{s.data.cost_profile}</p>
+              <a class="sysrow__link" href={`/systems/${s.id}`}>case study →</a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .section {
+    padding-block: var(--space-7);
+  }
+  .lede {
+    max-width: var(--measure);
+    color: var(--muted);
+    margin-top: var(--space-3);
+  }
+  .syslist {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0 0;
+  }
+  .sysrow {
+    display: grid;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-top: var(--border-hair);
+  }
+  .sysrow:last-child {
+    border-bottom: var(--border-hair);
+  }
+  @media (min-width: 48rem) {
+    .sysrow {
+      grid-template-columns: 1fr 14rem;
+      gap: var(--space-6);
+    }
+  }
+  .sysrow__main {
+    max-width: var(--measure);
+  }
+  .sysrow__title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--step-2);
+  }
+  .sysrow__title a {
+    text-decoration: none;
+  }
+  .sysrow__title a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+  }
+  .sysrow__flag {
+    color: var(--flag);
+    font-size: var(--step--1);
+    margin-top: var(--space-3);
+  }
+  .sysrow__flag .label {
+    color: var(--flag);
+  }
+  .sysrow__aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: start;
+  }
+  .sysrow__link {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-decoration: none;
+    color: var(--signal);
+  }
+  .sysrow__link:hover {
+    text-decoration: underline;
+  }
+</style>

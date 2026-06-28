@@ -1,0 +1,105 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const notes = (await getCollection('notes')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const rendered = await Promise.all(
+  notes.map(async (n) => ({ n, Content: (await render(n)).Content }))
+);
+const kindLabel: Record<string, string> = {
+  'changed-my-mind': 'changed my mind',
+  'stuck-on': 'stuck on',
+  'surprised-me': 'surprised me',
+  log: 'log',
+};
+---
+
+<Base
+  title="Notes — Dumindu Kumarapeli"
+  description="A running lab log: what I'm learning, stuck on, or was wrong about."
+>
+  <div class="wrap section">
+    <h1>Notes</h1>
+    <p class="lede">
+      A running lab log — what I'm learning, what I'm working through, and the
+      occasional thing I changed my mind about.
+    </p>
+
+    <div class="log">
+      {
+        rendered.map(({ n, Content }) => (
+          <article class="entry" id={n.id}>
+            <header class="entry__head">
+              <time class="meta" datetime={n.data.date.toISOString()}>
+                {n.data.date.toLocaleDateString('en-CA')}
+              </time>
+              <span class={`tag tag--${n.data.kind}`}>{kindLabel[n.data.kind]}</span>
+            </header>
+            <h2 class="entry__title">{n.data.title}</h2>
+            <div class="entry__body prose">
+              <Content />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</Base>
+
+<style>
+  .section {
+    padding-block: var(--space-7);
+  }
+  .lede {
+    max-width: var(--measure);
+    color: var(--muted);
+    margin-top: var(--space-3);
+  }
+  .log {
+    margin-top: var(--space-6);
+    max-width: var(--measure);
+  }
+  .entry {
+    padding-block: var(--space-6);
+    border-top: var(--border-hair);
+  }
+  .entry:last-child {
+    border-bottom: var(--border-hair);
+  }
+  .entry__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-2);
+  }
+  .entry__title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--step-1);
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    border: var(--border-hair);
+    border-radius: var(--radius);
+    padding: 0.05em 0.5em;
+  }
+  .tag--changed-my-mind {
+    color: var(--flag);
+    border-color: color-mix(in srgb, var(--flag) 40%, var(--rule));
+  }
+  .tag--surprised-me {
+    color: var(--signal);
+    border-color: color-mix(in srgb, var(--signal) 40%, var(--rule));
+  }
+  .entry__body :global(blockquote) {
+    border-left: 2px solid var(--rule);
+    padding-left: var(--space-4);
+    color: var(--muted);
+    font-style: italic;
+    margin-block: var(--space-4);
+  }
+</style>

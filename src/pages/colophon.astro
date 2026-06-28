@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site';
+---
+
+<Base
+  title="Colophon — how this site is built"
+  description="How this site is built: the stack, the tooling, and the accessibility baseline."
+>
+  <div class="wrap doc">
+    <div class="doc__body prose">
+      <h1>Colophon</h1>
+      <p class="lede">
+        How this site is built — the stack, the tooling, and the baseline it's
+        held to.
+      </p>
+
+      <h2>Stack</h2>
+      <ul>
+        <li><strong>Astro</strong>, static-first — the pages are static HTML. The only JavaScript is a dark-mode toggle and a copy-to-clipboard button on reproduce blocks; the commands are selectable plain text without it.</li>
+        <li><strong>Content collections + Zod</strong> — projects and research are structured content entries validated against a schema, so every entry is complete and consistent.</li>
+        <li><strong>Hand-tuned CSS</strong> with custom properties for the token system — a paper-and-ink palette with a single green accent, plus a dark theme. No utility-class framework defaults.</li>
+        <li><strong>Type:</strong> Source Serif 4 for prose, IBM&nbsp;Plex&nbsp;Mono for data, profiles, and reproduce blocks — self-hosted, so there's no third-party font request.</li>
+      </ul>
+
+      <h2>Accessibility &amp; performance</h2>
+      <ul>
+        <li>Core content works with JavaScript disabled.</li>
+        <li>Semantic HTML, real heading order, visible keyboard focus, and a skip link.</li>
+        <li><code>prefers-reduced-motion</code> is honored; light/dark themes follow your system preference by default.</li>
+        <li>Images are optimized to WebP at build time and the whole site stays light.</li>
+      </ul>
+
+      <h2>Source</h2>
+      <p>
+        The source lives on <a href={site.github} rel="me">GitHub</a>, with a
+        README covering how to run it locally.
+      </p>
+    </div>
+
+    <aside class="doc__rail" aria-label="At a glance">
+      <dl class="rail">
+        <p class="rail__title label">At a glance</p>
+        <div class="rail__row"><dt>framework</dt><dd>Astro (static)</dd></div>
+        <div class="rail__row"><dt>styling</dt><dd>hand-tuned CSS tokens</dd></div>
+        <div class="rail__row"><dt>fonts</dt><dd>self-hosted, 2 families</dd></div>
+        <div class="rail__row"><dt>themes</dt><dd>light &amp; dark</dd></div>
+        <div class="rail__row"><dt>source</dt><dd>↳ <a href={site.github} rel="me">GitHub</a></dd></div>
+      </dl>
+    </aside>
+  </div>
+</Base>
+
+<style>
+  .lede {
+    font-size: var(--step-1);
+    color: var(--ink);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+  .rail {
+    border: var(--border-hair);
+    border-radius: var(--radius);
+    background: var(--paper);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    margin: 0;
+  }
+  .rail__title {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-hair);
+    background: var(--paper-2);
+    margin: 0;
+  }
+  .rail__row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    border-bottom: var(--border-hair);
+  }
+  .rail__row:last-child {
+    border-bottom: none;
+  }
+  .rail dt {
+    color: var(--muted);
+  }
+  .rail dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  .rail a {
+    color: var(--signal);
+  }
+</style>

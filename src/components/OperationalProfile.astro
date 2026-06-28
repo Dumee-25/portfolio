@@ -1,0 +1,99 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+// The same compact data panel on every system (design report §1.4, §4).
+// The work always travels with its metadata — this lives in the margin rail.
+interface Props {
+  data: CollectionEntry<'systems'>['data'];
+}
+const { data } = Astro.props;
+const verified = data.last_verified.toLocaleDateString('en-CA'); // YYYY-MM-DD
+const rows: Array<[string, string | undefined]> = [
+  ['status', data.status],
+  ['hardware', data.hardware],
+  ['cost', data.cost_profile],
+  ['privacy', data.privacy],
+  ['HITL', data.human_in_the_loop],
+  ['verified', verified],
+];
+---
+
+<dl class="opanel">
+  <p class="opanel__title label">Operational profile</p>
+  {
+    rows.map(
+      ([k, v]) =>
+        v && (
+          <div class="opanel__row">
+            <dt>{k}</dt>
+            <dd>
+              {k === 'status' ? <span class={`pill pill--${v}`}>{v}</span> : v}
+            </dd>
+          </div>
+        )
+    )
+  }
+  {
+    data.receipts.length > 0 && (
+      <div class="opanel__row opanel__row--receipts">
+        <dt>receipts</dt>
+        <dd>
+          <ul>
+            {data.receipts.map((r) => (
+              <li>
+                ↳ <a href={r.url} rel="noopener">{r.label}</a>
+              </li>
+            ))}
+          </ul>
+        </dd>
+      </div>
+    )
+  }
+</dl>
+
+<style>
+  .opanel {
+    border: var(--border-hair);
+    border-radius: var(--radius);
+    background: var(--paper);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    margin: 0;
+  }
+  .opanel__title {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-hair);
+    background: var(--paper-2);
+    margin: 0;
+  }
+  .opanel__row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    border-bottom: var(--border-hair);
+  }
+  .opanel__row:last-child {
+    border-bottom: none;
+  }
+  .opanel dt {
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .opanel dd {
+    margin: 0;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  .opanel__row--receipts ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+  .opanel a {
+    color: var(--signal);
+    text-decoration-color: color-mix(in srgb, var(--signal) 40%, transparent);
+  }
+</style>

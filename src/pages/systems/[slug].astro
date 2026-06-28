@@ -1,0 +1,71 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Limitations from '../../components/Limitations.astro';
+import OperationalProfile from '../../components/OperationalProfile.astro';
+import Reproduce from '../../components/Reproduce.astro';
+
+export async function getStaticPaths() {
+  const systems = await getCollection('systems');
+  return systems.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+
+<Base title={`${d.title} — Dumindu Kumarapeli`} description={d.summary}>
+  <article class="wrap doc">
+    <!-- Reading column -->
+    <div class="doc__body prose">
+      <p class="back"><a href="/systems">← Systems</a></p>
+      <h1>{d.icon && <span aria-hidden="true">{d.icon} </span>}{d.title}</h1>
+      <p class="summary">{d.summary}</p>
+
+      <!-- What this does not do: open by default, above the fold (§1.2) -->
+      <Limitations items={d.limitations} failureModes={d.failure_modes} />
+
+      <Content />
+
+      {
+        d.reproduce && (
+          <Reproduce
+            command={d.reproduce.command}
+            environment={d.reproduce.environment}
+            runtime={d.reproduce.runtime}
+            expectedOutput={d.reproduce.expected_output}
+          />
+        )
+      }
+    </div>
+
+    <!-- The persistent margin rail: the work travels with its metadata (§4) -->
+    <aside class="doc__rail" aria-label="Operational profile">
+      <OperationalProfile data={d} />
+    </aside>
+  </article>
+</Base>
+
+<style>
+  .back a {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-decoration: none;
+    color: var(--muted);
+  }
+  .back a:hover {
+    color: var(--ink);
+  }
+  h1 {
+    margin-top: var(--space-3);
+  }
+  .summary {
+    font-size: var(--step-1);
+    color: var(--ink);
+    margin-top: var(--space-4);
+  }
+</style>

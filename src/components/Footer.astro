@@ -1,0 +1,54 @@
+---
+import { site } from '../site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p class="creed">
+      {site.role} — LLM/RAG &amp; agentic systems, applied ML, and computer vision.
+    </p>
+    <ul class="links">
+      <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      <li><a href={site.cv} download>CV</a></li>
+      <li><a href={site.linkedin} rel="me">LinkedIn</a></li>
+      <li><a href={site.github} rel="me">GitHub</a></li>
+      <li><a href="/colophon">How this site is built</a></li>
+    </ul>
+    <p class="meta colophon-note">
+      © {year} {site.name}. Built with Astro. Source &amp; build notes on the
+      <a href="/colophon">colophon</a>.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-foot {
+    border-top: var(--border-hair);
+    margin-top: auto;
+    background: var(--paper-2);
+  }
+  .site-foot__inner {
+    padding-block: var(--space-6);
+    display: grid;
+    gap: var(--space-4);
+  }
+  .creed {
+    font-style: italic;
+    color: var(--ink);
+    max-width: var(--measure);
+  }
+  .links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+  .colophon-note {
+    max-width: var(--measure);
+  }
+</style>

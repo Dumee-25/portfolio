@@ -1,0 +1,110 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const inquiry = (await getCollection('inquiry')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<Base
+  title="Inquiry — Dumindu Kumarapeli"
+  description="Research questions across epidemiological forecasting, medical AI, and reinforcement learning — with honest status, including work still under review."
+>
+  <div class="wrap section">
+    <h1>Inquiry</h1>
+    <p class="lede">
+      Questions asked, across epidemiological forecasting, medical AI, and
+      reinforcement learning. Each has a method, a result, and its current status.
+    </p>
+
+    <ul class="inqlist">
+      {
+        inquiry.map((q) => (
+          <li class="inqrow">
+            <div class="inqrow__main">
+              <h2 class="inqrow__title">
+                <a href={`/inquiry/${q.id}`}>{q.data.title}</a>
+              </h2>
+              <p>{q.data.summary}</p>
+            </div>
+            <div class="inqrow__aside">
+              <span class={`pill pill--${q.data.status}`}>{q.data.status}</span>
+              <a class="inqrow__link" href={`/inquiry/${q.id}`}>open →</a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="also meta">
+      Also: applied genetic algorithms to combinatorial optimization (TSP) and to
+      ML feature selection.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .section {
+    padding-block: var(--space-7);
+  }
+  .lede {
+    max-width: var(--measure);
+    color: var(--muted);
+    margin-top: var(--space-3);
+  }
+  .inqlist {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0 0;
+  }
+  .inqrow {
+    display: grid;
+    gap: var(--space-3);
+    padding-block: var(--space-5);
+    border-top: var(--border-hair);
+  }
+  .inqrow:last-child {
+    border-bottom: var(--border-hair);
+  }
+  @media (min-width: 48rem) {
+    .inqrow {
+      grid-template-columns: 1fr 9rem;
+      gap: var(--space-6);
+      align-items: start;
+    }
+  }
+  .inqrow__main {
+    max-width: var(--measure);
+  }
+  .inqrow__title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--step-1);
+  }
+  .inqrow__title a {
+    text-decoration: none;
+  }
+  .inqrow__title a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+  }
+  .inqrow__aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: start;
+  }
+  .inqrow__link {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-decoration: none;
+    color: var(--signal);
+  }
+  .inqrow__link:hover {
+    text-decoration: underline;
+  }
+  .also {
+    margin-top: var(--space-6);
+    max-width: var(--measure);
+  }
+</style>
