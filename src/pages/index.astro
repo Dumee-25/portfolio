@@ -1,9 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import { site, stack } from '../site';
-import portrait from '../assets/dp-portrait.jpg';
+// Portrait served as a plain static file from public/ — no image pipeline,
+// no /_image endpoint, works on any host including Cloudflare Workers.
 
 const systems = (await getCollection('systems')).sort(
   (a, b) => a.data.order - b.data.order
@@ -46,11 +46,11 @@ const inquiry = (await getCollection('inquiry')).sort(
       </div>
 
       <figure class="hero__portrait">
-        <Image
-          src={portrait}
-          alt={`${site.name}`}
-          widths={[280, 560]}
-          sizes="(min-width: 60rem) 280px, 70vw"
+        <img
+          src="/dp-portrait.jpg"
+          alt={site.name}
+          width="600"
+          height="750"
           loading="eager"
         />
         <figcaption class="meta">
