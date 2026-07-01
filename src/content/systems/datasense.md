@@ -1,7 +1,6 @@
 ---
 title: 'DataSense — Privacy-Preserving Automated EDA'
 order: 2
-icon: '📊'
 status: prototype
 summary: 'Upload a CSV, get a full statistical audit, a model recommendation, and plain-language insights — without sending your raw data to any LLM.'
 stack: ['FastAPI', 'Next.js 14', 'PostgreSQL', 'Polars', 'SciPy', 'scikit-learn', 'Ollama']

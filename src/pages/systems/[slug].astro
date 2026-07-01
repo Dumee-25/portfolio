@@ -23,7 +23,7 @@ const d = entry.data;
     <!-- Reading column -->
     <div class="doc__body prose">
       <p class="back"><a href="/systems">← Systems</a></p>
-      <h1>{d.icon && <span aria-hidden="true">{d.icon} </span>}{d.title}</h1>
+      <h1>{d.title}</h1>
       <p class="summary">{d.summary}</p>
 
       <!-- What this does not do: open by default, above the fold (§1.2) -->
@@ -52,7 +52,7 @@ const d = entry.data;
 
 <style>
   .back a {
-    font-family: var(--font-mono);
+    font-family: var(--font-ui);
     font-size: var(--step--1);
     text-decoration: none;
     color: var(--muted);

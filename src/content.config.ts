@@ -18,7 +18,6 @@ const systems = defineCollection({
     order: z.number().default(99),
     summary: z.string().max(280),
     status: z.enum(['prototype', 'deployed', 'archived']),
-    icon: z.string().optional(),
     stack: z.array(z.string()).default([]),
     hardware: z.string(), // "RTX 4050 (6GB) / Ryzen 7"
     cost_profile: z.string(), // "~$0.0004 / query"

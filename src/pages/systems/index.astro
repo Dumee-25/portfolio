@@ -24,10 +24,7 @@ const systems = (await getCollection('systems')).sort(
           <li class="sysrow">
             <div class="sysrow__main">
               <h2 class="sysrow__title">
-                <a href={`/systems/${s.id}`}>
-                  {s.data.icon && <span aria-hidden="true">{s.data.icon} </span>}
-                  {s.data.title}
-                </a>
+                <a href={`/systems/${s.id}`}>{s.data.title}</a>
               </h2>
               <p>{s.data.summary}</p>
               <p class="sysrow__flag">
@@ -105,7 +102,7 @@ const systems = (await getCollection('systems')).sort(
     align-items: start;
   }
   .sysrow__link {
-    font-family: var(--font-mono);
+    font-family: var(--font-ui);
     font-size: var(--step--1);
     text-decoration: none;
     color: var(--signal);

@@ -1,7 +1,6 @@
 ---
 title: 'OWL — Datacenter AI Operations Platform'
 order: 1
-icon: '🦉'
 status: prototype
 summary: 'An agentic, RAG-powered operations assistant for datacenter infrastructure, with real-time anomaly detection and LLM root-cause analysis built in.'
 stack: ['Gemini', 'ChromaDB', 'MCP', 'PyTorch', 'scikit-learn', 'FastAPI', 'React 19']

@@ -74,10 +74,7 @@ const inquiry = (await getCollection('inquiry')).sort(
             <li class="card">
               <a class="card__hit" href={`/systems/${s.id}`} aria-label={s.data.title} />
               <div class="card__top">
-                <h3 class="card__title">
-                  {s.data.icon && <span aria-hidden="true">{s.data.icon} </span>}
-                  {s.data.title}
-                </h3>
+                <h3 class="card__title">{s.data.title}</h3>
                 <span class={`pill pill--${s.data.status}`}>{s.data.status}</span>
               </div>
               <p class="card__summary">{s.data.summary}</p>
@@ -171,8 +168,9 @@ const inquiry = (await getCollection('inquiry')).sort(
   }
   @media (min-width: 60rem) {
     .hero__grid {
-      grid-template-columns: 1fr 280px;
+      grid-template-columns: 1fr 340px;
       gap: var(--space-8);
+      padding-block: var(--space-8);
     }
   }
   .hero__kicker {
@@ -189,7 +187,7 @@ const inquiry = (await getCollection('inquiry')).sort(
     box-shadow: 0 0 0 3px var(--signal-tint);
   }
   .hero__lede {
-    max-width: 18ch;
+    max-width: 20ch;
     font-size: var(--step-4);
   }
   .hl {
@@ -197,7 +195,7 @@ const inquiry = (await getCollection('inquiry')).sort(
     font-style: italic;
   }
   .hero__std {
-    max-width: 54ch;
+    max-width: 58ch;
     margin-top: var(--space-5);
     color: var(--ink);
   }
@@ -220,7 +218,7 @@ const inquiry = (await getCollection('inquiry')).sort(
   }
   @media (min-width: 60rem) {
     .hero__portrait {
-      width: 280px;
+      width: 340px;
       justify-self: end;
     }
   }
@@ -260,14 +258,14 @@ const inquiry = (await getCollection('inquiry')).sort(
     gap: var(--space-3);
   }
   .section__no {
-    font-family: var(--font-mono);
+    font-family: var(--font-ui);
     font-size: var(--step-0);
     color: var(--signal);
     font-weight: 500;
   }
   .section__more,
   .card__link {
-    font-family: var(--font-mono);
+    font-family: var(--font-ui);
     font-size: var(--step--1);
     text-decoration: none;
     color: var(--signal);
@@ -341,7 +339,7 @@ const inquiry = (await getCollection('inquiry')).sort(
     padding: var(--space-2) var(--space-3);
   }
   .card__flag-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-ui);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-right: 0.4em;
@@ -365,22 +363,28 @@ const inquiry = (await getCollection('inquiry')).sort(
     margin: 0;
   }
   .chips li {
-    font-family: var(--font-mono);
+    font-family: var(--font-ui);
     font-size: var(--step--1);
     font-weight: 500;
     color: var(--ink);
-    border: 1px solid color-mix(in srgb, var(--muted) 45%, var(--rule));
+    border: 1px solid color-mix(in srgb, var(--muted) 50%, var(--rule));
     border-radius: var(--radius);
-    padding: 0.2em 0.6em;
-    background: var(--paper-2);
+    padding: 0.25em 0.65em;
+    background: var(--paper);
   }
-  /* a quiet accent so the tools read as "live" without shouting */
+  /* Tech-stack chips: solid on-brand fill so they read clearly on the panel. */
   .stackgroup .chips li {
-    border-left: 2px solid color-mix(in srgb, var(--signal) 55%, var(--rule));
+    font-size: 0.85rem;
+    color: color-mix(in srgb, var(--signal) 65%, var(--ink));
+    background: var(--signal-tint);
+    border: 1px solid color-mix(in srgb, var(--signal) 32%, var(--rule));
+    border-left: 3px solid var(--signal);
+    padding: 0.3em 0.7em;
   }
   .chips--sm li {
-    font-size: 0.72rem;
-    font-weight: 400;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: var(--paper-2);
   }
 
   /* ---- Inquiry list ---- */
@@ -447,7 +451,7 @@ const inquiry = (await getCollection('inquiry')).sort(
   /* ---- Buttons ---- */
   .btn {
     display: inline-block;
-    font-family: var(--font-mono);
+    font-family: var(--font-ui);
     font-size: var(--step--1);
     text-decoration: none;
     color: var(--ink);
