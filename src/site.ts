@@ -32,7 +32,7 @@ export const stack = [
   },
   {
     group: 'Backend / Infra',
-    items: ['FastAPI', 'Spring Boot', 'PostgreSQL', 'Docker', 'Git'],
+    items: ['FastAPI', 'Spring Boot', 'PostgreSQL', 'SQLite', 'Docker', 'Git'],
   },
   {
     group: 'Frontend / Viz',
