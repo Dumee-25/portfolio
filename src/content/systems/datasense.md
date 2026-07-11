@@ -22,7 +22,8 @@ reproduce:
   expected_output: 'A statistical audit, up to 14 relevant charts, a confidence-scored model recommendation, and a formatted PDF report.'
 receipts:
   - { label: 'repository', url: 'https://github.com/Dumee-25/DataSense' }
-last_verified: 2026-06-28
+  - { label: 'paper — NSRSIT 2026 (pp. 146–150)', url: 'https://nsrsit.nsbm.ac.lk/assets/proceedings/student_symphosium_2026.pdf' }
+last_verified: 2026-07-11
 ---
 
 A 7-step async pipeline that profiles a dataset, runs the statistics, recommends
@@ -44,7 +45,9 @@ local LLMs** — so only computed facts, never raw rows, ever reach the model.
 
 ## Paper
 
-The method is written up as *"Privacy-preserving automated exploratory data
-analysis using deterministic summarization and local large language models,"*
-**accepted for oral presentation (to appear).** A link will be added here as a
-receipt once the proceedings are published.
+The method is published as *"Privacy-preserving automated exploratory data
+analysis using deterministic summarization and local large language models,"* in
+the **NSBM Student Research Symposium on Innovation Technology (NSRSIT) 2026**
+proceedings (pp. 146–150), where it won **Best Overall Research** for the
+session. See the [inquiry write-up](/inquiry/privacy-eda) for the question and
+method.

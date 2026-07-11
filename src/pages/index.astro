@@ -39,6 +39,14 @@ const inquiry = (await getCollection('inquiry')).sort(
           <a class="btn" href={site.cv} download>Download CV</a>
           <a class="btn" href={`mailto:${site.email}`}>Email me</a>
         </div>
+        <p class="hero__honor">
+          <span class="hero__honor-badge">Best Overall Research</span>
+          <span
+            >NSRSIT 2026, for my first <a href="/inquiry/privacy-eda"
+              >published paper</a
+            > on privacy-preserving automated EDA.</span
+          >
+        </p>
         <p class="hero__exploring meta">
           Currently exploring: CUDA acceleration · sequence models (RNN/LSTM) ·
           production LLM/RAG pipelines.
@@ -98,7 +106,7 @@ const inquiry = (await getCollection('inquiry')).sort(
       <h2 id="inquiry"><span class="section__no">02</span> Inquiry</h2>
       <a class="section__more" href="/inquiry">all inquiry →</a>
     </div>
-    <p class="section__intro">Questions asked — across epidemiological forecasting, medical AI, and reinforcement learning.</p>
+    <p class="section__intro">Questions asked — across privacy-preserving ML, epidemiological forecasting, medical AI, and reinforcement learning.</p>
     <ul class="inq-list">
       {
         inquiry.map((q) => (
@@ -204,6 +212,36 @@ const inquiry = (await getCollection('inquiry')).sort(
     flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-5);
+  }
+  .hero__honor {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    max-width: 54ch;
+    margin-top: var(--space-5);
+    font-family: var(--font-ui);
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .hero__honor-badge {
+    color: color-mix(in srgb, var(--signal) 70%, var(--ink));
+    background: var(--signal-tint);
+    border: 1px solid color-mix(in srgb, var(--signal) 32%, var(--rule));
+    border-left: 3px solid var(--signal);
+    border-radius: var(--radius);
+    padding: 0.25em 0.6em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .hero__honor a {
+    color: var(--signal);
+    text-decoration: none;
+  }
+  .hero__honor a:hover {
+    text-decoration: underline;
   }
   .hero__exploring {
     max-width: 54ch;
