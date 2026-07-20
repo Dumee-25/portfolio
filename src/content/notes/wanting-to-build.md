@@ -1,6 +1,6 @@
 ---
 title: "Wanting to build something, not just code it"
-date: 2026-07-20
+date: 2026-07-19
 kind: changed-my-mind
 tags: ['robotics', 'meta']
 ---

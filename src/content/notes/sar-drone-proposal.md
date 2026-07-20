@@ -1,6 +1,6 @@
 ---
 title: "An idea I'm working on: a search-and-rescue drone"
-date: 2026-07-19
+date: 2026-07-20
 kind: log
 tags: ['robotics', 'sar', 'drones']
 ---
