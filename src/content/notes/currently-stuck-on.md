@@ -16,5 +16,3 @@ The three things eating most of my attention right now:
 - **Production LLM / RAG pipelines.** The gap between a notebook demo and a
   system that's cost-bounded, observable, and honest when it doesn't know — that
   gap is most of the work, and the most interesting part.
-
-> _Seed entry — replace with your real current notes as the work moves._

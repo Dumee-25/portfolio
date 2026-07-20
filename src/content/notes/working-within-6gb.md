@@ -13,5 +13,3 @@ leaderboard.
 
 A system that runs on a 6 GB consumer GPU is more convincing to me than one that
 only exists on borrowed A100s, because I can reproduce it tomorrow.
-
-> _Seed entry — replace with your real current notes as the work moves._
