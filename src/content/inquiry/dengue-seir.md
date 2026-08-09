@@ -1,6 +1,6 @@
 ---
 title: 'Short-term dengue outbreak forecasting and risk mapping for Sri Lanka'
-order: 1
+order: 2
 status: ongoing
 venue: 'Working title: "A Machine Learning–Enhanced SEIR Pipeline" (in progress)'
 summary: 'A comprehensive design-and-implementation framework for short-term prediction and spatial risk mapping of dengue outbreaks in Sri Lanka, built on a hybrid SEIR + machine-learning pipeline.'
