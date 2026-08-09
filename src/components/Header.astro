@@ -54,7 +54,12 @@ const isActive = (href: string) =>
 </script>
 
 <style>
+  /* Sticky: the nav is the only chrome, so it stays reachable at any scroll
+     depth. Opaque --paper, not a blur — content must not bleed through. */
   .site-head {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     border-bottom: var(--border-hair);
     background: var(--paper);
   }
