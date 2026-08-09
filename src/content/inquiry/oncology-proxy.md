@@ -1,6 +1,6 @@
 ---
 title: 'A composite clinical proxy for durable clinical benefit in oncology'
-order: 2
+order: 3
 status: under-review
 venue: 'Under review'
 summary: 'A composite clinical-proxy framework for predicting durable clinical benefit in oncology using real-world clinicogenomic data.'
