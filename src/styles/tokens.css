@@ -46,6 +46,7 @@
   --rail: 17rem; /* the persistent margin rail */
   --wrap: 82rem; /* max content width — wide enough not to feel cramped */
   --gutter: clamp(1.25rem, 5vw, 4rem);
+  --head-h: 4rem; /* sticky header height — anchors and the rail clear it */
   --radius: 2px; /* lab-notebook restraint, not zero (that's an AI-default look) */
 
   --border-hair: 1px solid var(--rule);
