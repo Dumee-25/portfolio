@@ -7,7 +7,6 @@ export const site = {
   blurb:
     'LLM / RAG & agentic systems, applied ML & modeling, and computer vision.',
   affiliation: 'BSc (Hons) Data Science, NSBM Green University, Sri Lanka',
-  org: 'Assistant Secretary, NSBM AI Association (NAIA)',
   // One real channel, no form theatre. (§9)
   email: 'duminduku.25@gmail.com',
   linkedin: 'https://www.linkedin.com/in/dumindu-kumarapeli-7a4636309',
