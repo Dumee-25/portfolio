@@ -1,6 +1,6 @@
 ---
 title: 'Short-term dengue outbreak forecasting and risk mapping for Sri Lanka'
-order: 2
+order: 3
 status: ongoing
 venue: 'Working title: "A Machine Learning–Enhanced SEIR Pipeline" (in progress)'
 summary: 'A comprehensive design-and-implementation framework for short-term prediction and spatial risk mapping of dengue outbreaks in Sri Lanka, built on a hybrid SEIR + machine-learning pipeline.'
@@ -17,6 +17,11 @@ A hybrid epidemiological pipeline: a mechanistic SEIR backbone for outbreak
 dynamics, enhanced with machine learning for short-term prediction and spatial
 risk mapping across Sri Lanka. The aim is a framework that is reproducible and
 honest about its forecast horizon, not a single headline accuracy number.
+
+One result has come out of this work and been accepted for oral presentation:
+[timescale separation and model reduction](/inquiry/dengue-timescale), on why
+the usual step of simplifying the mosquito out of the model does not hold at a
+forecasting horizon.
 
 This is **ongoing** — the open questions above are the parts that are genuinely
 unsettled, not rhetorical.
