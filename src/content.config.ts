@@ -11,6 +11,14 @@ const receipt = z.object({
   url: z.string().url(),
 });
 
+// Authorship, listed in submitted order. Position is carried by the order of
+// the array; the jobs that are not position (presenting, corresponding) are
+// stated rather than left to be inferred from it.
+const author = z.object({
+  name: z.string(),
+  role: z.string().optional(),
+});
+
 const systems = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/systems' }),
   schema: z.object({
@@ -48,6 +56,7 @@ const inquiry = defineCollection({
     summary: z.string().max(320),
     status: z.enum(['ongoing', 'under-review', 'accepted', 'rejected', 'published']),
     venue: z.string().optional(),
+    authors: z.array(author).default([]),
     method: z.string().optional(),
     open_questions: z.array(z.string()).min(1), // the honest "what we don't know yet"
     receipts: z.array(receipt).default([]),

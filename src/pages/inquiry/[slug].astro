@@ -39,6 +39,20 @@ const verified = d.last_verified.toLocaleDateString('en-CA');
         <p class="rail__title label">Details</p>
         <div class="rail__row"><dt>status</dt><dd><span class={`pill pill--${d.status}`}>{d.status}</span></dd></div>
         {d.venue && (<div class="rail__row"><dt>venue</dt><dd>{d.venue}</dd></div>)}
+        {
+          d.authors.length > 0 && (
+            <div class="rail__row">
+              <dt>authors</dt>
+              <dd>
+                <ul>
+                  {d.authors.map((a) => (
+                    <li>{a.name}{a.role && <span class="rail__role"> ({a.role})</span>}</li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          )
+        }
         {d.method && (<div class="rail__row"><dt>method</dt><dd>{d.method}</dd></div>)}
         <div class="rail__row"><dt>verified</dt><dd>{verified}</dd></div>
         {
@@ -118,6 +132,9 @@ const verified = d.last_verified.toLocaleDateString('en-CA');
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+  .rail__role {
+    color: var(--muted);
   }
   .rail a {
     color: var(--signal);

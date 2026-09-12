@@ -47,6 +47,14 @@ const inquiry = (await getCollection('inquiry')).sort(
             > on privacy-preserving automated EDA.</span
           >
         </p>
+        <p class="hero__honor">
+          <span class="hero__honor-badge">Accepted, oral presentation</span>
+          <span
+            >ICCMM 2026, University of Colombo, for <a
+              href="/inquiry/dengue-timescale">a result on model reduction</a
+            > in dengue forecasting.</span
+          >
+        </p>
         <p class="hero__exploring meta">
           Currently exploring: CUDA acceleration · sequence models (RNN/LSTM) ·
           production LLM/RAG pipelines.
@@ -223,6 +231,10 @@ const inquiry = (await getCollection('inquiry')).sort(
     font-family: var(--font-ui);
     font-size: var(--step--1);
     color: var(--muted);
+  }
+  /* Consecutive honours read as one group, not two separate claims. */
+  .hero__honor + .hero__honor {
+    margin-top: var(--space-2);
   }
   .hero__honor-badge {
     color: color-mix(in srgb, var(--signal) 70%, var(--ink));
