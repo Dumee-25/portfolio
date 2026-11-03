@@ -1,23 +1,29 @@
 ---
 title: 'A composite clinical proxy for durable clinical benefit in oncology'
-order: 4
-status: under-review
-venue: 'Under review'
-summary: 'A composite clinical-proxy framework for predicting durable clinical benefit in oncology using real-world clinicogenomic data.'
-method: 'Modeling durable clinical benefit from real-world clinicogenomic data via a composite proxy of clinical signals.'
+order: 6
+status: rejected
+venue: 'Rejected. The work continues as a separate audit paper, now in preparation.'
+summary: 'A classifier trained on a hand-built response index for durable clinical benefit, using real-world clinicogenomic data from MSK-CHORD. It reached an AUC of 0.815 on one hold-out split. The paper was rejected, and auditing the index afterwards showed the number said less than it seemed.'
+method: 'A composite response index scored each patient from overall survival against a peer group, vital status and two baseline facts, and a gradient-boosted classifier learned to predict it.'
 open_questions:
-  - 'Does the composite proxy hold up across cohorts collected under different real-world conditions?'
-  - 'How sensitive are the conclusions to the definition of "durable benefit" chosen?'
-  - 'Where does real-world data bias (missingness, selection) most threaten the result, and how is that bounded?'
+  - 'Was the index ever the right target? It agrees only moderately with observed six-month progression-free benefit (AUC 0.726), and survival, one of its ingredients, cannot validate it on its own.'
+  - 'Can a hand-built label be stable enough to train on? Across reasonable thresholds and medians, up to 41.5% of labels flip, so small design choices change who counts as a responder.'
 receipts: []
-last_verified: 2026-06-28
+last_verified: 2026-10-16
 ---
 
-A framework for predicting **durable clinical benefit** in oncology from
-real-world clinicogenomic data, using a composite of clinical proxies rather than
-a single endpoint.
+Status: **rejected.**
 
-Status: **under review.** As with any model trained on real-world data, the
-honest boundary is explicit — this is a research artifact for understanding
-durable benefit, **not a clinical decision tool or a medical device.** The open
-questions above are where the work is most uncertain.
+What I learned from it:
+
+- A high AUC on a constructed label can mean the model learned the recipe. The
+  same features reach 0.853 on the index label, against 0.776 on an endpoint
+  observed in the records.
+- The AUC did not notice a real bug. A text match on "prior medications" also
+  matched "no prior medications" and scored 14,853 untreated samples as
+  pre-treated, yet no single fix moved the AUC by more than a few thousandths.
+- Some features carried information from after sequencing, such as tumour-site
+  flags taken from any radiology report, ever.
+
+Rather than patch this paper, I rebuilt the work around observed endpoints:
+[Proxy labels versus observed endpoints](/inquiry/proxy-labels).
