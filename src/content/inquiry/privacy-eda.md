@@ -39,3 +39,7 @@ by construction, not by policy.
 
 The method is implemented and running as the [DataSense](/systems/datasense)
 system — see that case study for the architecture and reproduce block.
+
+An extended version, built on DataSense v2, is in preparation for ICARC. It asks
+whether the privacy can be measured and the model's numbers checked:
+[DataSense v2](/inquiry/datasense-v2).
