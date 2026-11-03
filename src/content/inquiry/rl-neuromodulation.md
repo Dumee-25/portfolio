@@ -1,6 +1,6 @@
 ---
 title: 'Recovering neuromodulatory profiles from behaviour in RL agents'
-order: 5
+order: 7
 status: ongoing
 venue: 'Working title: "Joint Identifiability and Degeneracy in Reinforcement-Learning Agents" (in progress)'
 summary: 'Studying joint identifiability and degeneracy when inferring neuromodulatory profiles from the behaviour of reinforcement-learning agents.'

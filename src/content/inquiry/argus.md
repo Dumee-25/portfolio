@@ -1,6 +1,6 @@
 ---
 title: 'Argus — does a fused belief map stay honest when its sensors fail?'
-order: 1
+order: 2
 status: ongoing
 venue: 'Self-directed simulation study — the core of the search-and-rescue drone work (internal report, 6 August 2026)'
 summary: 'A search system that holds one probability distribution over map cells is only useful if its stated confidence means something. Three differently-flawed sensors are fused into one belief, scored for calibration rather than accuracy, then put under sensor failure to see whether the honesty survives.'

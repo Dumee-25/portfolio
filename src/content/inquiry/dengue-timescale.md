@@ -1,6 +1,6 @@
 ---
 title: 'Timescale separation and model reduction in operational dengue forecasting'
-order: 2
+order: 3
 status: accepted
 venue: 'ICCMM 2026, the International Conference on Computational and Mathematical Modelling, hosted by the Centre for Mathematical Modelling, Department of Mathematics, Faculty of Science, University of Colombo, in collaboration with the 33rd FAI International Conference. Colombo, 12 to 14 November 2026. Accepted for oral presentation.'
 authors:

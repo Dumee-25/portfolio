@@ -1,0 +1,139 @@
+%==============================================================================
+% Dumindu Kumarapeli, CV. Source of public/Dumindu-Kumarapeli-CV.pdf.
+% Compile with pdflatex, then copy the PDF to public/:
+%   pdflatex -output-directory=<tmp> cv/Dumindu-Kumarapeli-CV.tex
+%==============================================================================
+
+\documentclass[a4paper,11pt]{article}
+
+\IfFileExists{cmap.sty}{\usepackage{cmap}}{} % glyphtounicode below covers it when absent
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx} % Times, as in the earlier PDFs
+\usepackage[top=0.5in,bottom=0.5in,left=0.65in,right=0.65in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{0pt}
+\raggedbottom
+\raggedright
+
+\titleformat{\section}
+  {\normalsize\bfseries}
+  {}{0em}{}[\vspace{-0.6em}\rule{\textwidth}{0.5pt}]
+\titlespacing{\section}{0pt}{5pt}{2pt}
+
+\newcommand{\lrline}[2]{%
+  \par\noindent\hbox to \linewidth{#1\hfil #2}\par
+}
+\newcommand{\entry}[4]{%
+  \vspace{2pt}
+  \lrline{\textbf{#1}}{#2}
+  \lrline{\textit{\small #3}}{\textit{\small #4}}
+}
+\newcommand{\project}[3]{%
+  \vspace{3pt}
+  \lrline{\textbf{#1} $\vert$ \small\textit{#2}}{\small #3}
+}
+
+\newenvironment{bullets}
+  {\begin{itemize}[leftmargin=1.3em,topsep=1pt,itemsep=0.5pt,parsep=0pt,label=\textbullet]\small}
+  {\end{itemize}\vspace{1pt}}
+
+%==============================================================================
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Dumindu Kumarapeli}\\[3pt]
+  \small +94 76 085 8628 $\vert$ \href{mailto:duminduku.25@gmail.com}{duminduku.25@gmail.com} $\vert$ Colombo, Sri Lanka\\
+  \small \href{https://www.linkedin.com/in/dumindu-kumarapeli-7a4636309}{linkedin.com/in/dumindu-kumarapeli-7a4636309} $\vert$
+  \href{https://github.com/Dumee-25}{github.com/Dumee-25} $\vert$
+  \href{https://portfolio.kadpkumarapeli.workers.dev}{portfolio.kadpkumarapeli.workers.dev}
+\end{center}
+
+{\small Data Science undergraduate building LLM systems end to end (RAG, agents, local-model inference), with
+first-author research on privacy-preserving LLM analysis, epidemic forecasting and clinical prediction.\par}
+
+% ------------------------------------------------------------- education --
+\section{Education}
+
+\entry
+  {NSBM Green University}{Sri Lanka}
+  {BSc (Hons) Data Science, currently Year 3}{2025 -- Expected Dec 2028}
+\begin{bullets}
+  \item GPA 3.85/4.00.
+\end{bullets}
+
+% --------------------------------------------------- research and papers --
+\section{Research and Publications}
+
+\begin{bullets}
+  \item \textbf{D. Kumarapeli} and H. Weerasinghe, ``Privacy-preserving automated exploratory data analysis using
+        deterministic summarization and local large language models,'' \textit{Proc. NSBM Student Research Symposium
+        on Innovation Technology (NSRSIT)}, 2026, pp.~146--150. \textbf{Best Overall Research}, session award.
+  \item \textbf{D. Kumarapeli} and H. Weerasinghe, ``Timescale separation and model reduction in operational dengue
+        forecasting,'' ICCMM 2026, University of Colombo. [accepted, oral presentation]
+  \item \textbf{D. Kumarapeli} and H. Weerasinghe, ``A regime audit for detecting constraint-artefact reproduction
+        numbers in hybrid mechanistic--machine learning epidemic models.'' [under review]
+  \item Extended NSRSIT paper on DataSense v2: measurable privacy, checked LLM output. Target: ICARC. [in preparation]
+  \item \textbf{D. Kumarapeli} and H. Weerasinghe, ``A hybrid compartmental and neural network model for
+        district-level dengue forecasting in Sri Lanka: forecast skill, spatial heterogeneity and identifiability.''
+        Target: \textit{Ceylon J. Sci.} [in preparation]
+  \item \textbf{D. Kumarapeli} and H. Weerasinghe, ``Proxy labels versus observed endpoints: an audit and benchmark
+        of clinical benefit prediction on MSK-CHORD.'' [in preparation]
+\end{bullets}
+
+% ---------------------------------------------------------------- projects --
+\section{LLM and AI Projects}
+
+\project{DataSense v2: Privacy-Preserving Automated EDA}{Polars, Presidio, OpenDP}{\href{https://portfolio.kadpkumarapeli.workers.dev/systems/datasense}{portfolio case study}}
+\begin{bullets}
+  \item Rebuilt the NSRSIT system local-first: privacy tiers limit each prompt, Presidio finds personal data, optional
+        differential privacy adds noise, and every number the model writes is checked against the facts it cites.
+  \item Built a benchmark on the frozen engine: it found 4,644 of 5,421 problems planted in 50 OpenML tables, and
+        27 of the 35 columns it flagged in Raha's real dirty tables had wrong cells. It still misses typos.
+\end{bullets}
+
+\project{OWL: Datacenter AI Operations Platform}{Gemini, MCP}{\href{https://github.com/Dumee-25/OWL-Datacenter_agent}{github.com/Dumee-25/OWL-Datacenter\_agent}}
+\begin{bullets}
+  \item Built an agentic RAG assistant over ChromaDB with hybrid vector and keyword retrieval and
+        recency re-ranking, served through REST, WebSocket and a nine-tool MCP server.
+  \item Paired an Isolation Forest and LSTM autoencoder ensemble with Gemini-generated root-cause reports;
+        every alert carries a confidence score and the system never acts on infrastructure.
+  \item Wrote a simulator producing 4.7M telemetry rows over 18 months; logged per-call LLM latency and cost.
+\end{bullets}
+
+\project{Fulyn: Private Tool-Calling Agent}{pgvector, Ollama}{\href{https://github.com/Dumee-25/Fulyn}{github.com/Dumee-25/Fulyn}}
+\begin{bullets}
+  \item Agent turns free-text diary entries into linked expense, sleep, mood and journal records;
+        every tool call is schema-checked and invalid arguments are returned to the model to retry.
+  \item Replaced vector-only search after finding unrelated queries scored 0.62 similarity, higher
+        than some true matches; now merges vector and full-text rankings and flags keyword-free hits.
+  \item Ran opt-in tool-calling tests across local models; llama3.2 failed most by picking the wrong tool
+        or inventing arguments.
+\end{bullets}
+
+% ------------------------------------------------------------------ skills --
+\section{Technical Skills}
+
+\small
+\textbf{LLM / RAG:} Retrieval-augmented generation (RAG), AI agents and tool calling, prompt engineering,
+Ollama, Gemini, OpenAI API, ChromaDB, pgvector, Model Context Protocol (MCP)\\
+\textbf{ML / Data:} PyTorch, scikit-learn, XGBoost, LightGBM, pandas, Polars, NumPy, SciPy, YOLOv8, OpenCV\\
+\textbf{Privacy:} Differential privacy (OpenDP), personal-data detection (Microsoft Presidio), prompt-injection filtering\\
+\textbf{Languages:} Python, SQL, Java, JavaScript, TypeScript, R\\
+\textbf{Backend / Tools:} FastAPI, PostgreSQL, SQLite, Docker, Git/GitHub, Linux, Next.js, React, CUDA\\
+\textbf{Spoken:} English (fluent), Sinhala (native)
+
+% ------------------------------------------------------------------ awards --
+\section{Awards}
+
+{\small Best Overall Research, session award, NSRSIT 2026 (2026) $\vert$ Data Storm 7.0 Final Round, Top 10, team Data Drifters (2026)\par}
+
+\end{document}
