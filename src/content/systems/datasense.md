@@ -24,6 +24,12 @@ reproduce:
 receipts:
   - { label: 'repository', url: 'https://github.com/Dumee-25/DataSense' }
   - { label: 'paper — NSRSIT 2026 (pp. 146–150)', url: 'https://nsrsit.nsbm.ac.lk/assets/proceedings/student_symphosium_2026.pdf' }
+home:
+  rank: 1
+  line: 'Upload a data file, get a statistical audit, a model recommendation and plain-language findings. Every number the AI writes is checked against computed facts.'
+  meta: 'Runs locally, about $0 with Ollama'
+  limit: 'Misses errors that look valid, such as typos.'
+  also: { label: 'Also a paper: NSRSIT 2026', href: '/inquiry/privacy-eda' }
 last_verified: 2026-11-03
 ---
 

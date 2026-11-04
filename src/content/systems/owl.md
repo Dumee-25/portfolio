@@ -1,5 +1,5 @@
 ---
-title: 'OWL — Datacenter AI Operations Platform'
+title: 'OWL: Datacenter AI Operations Platform'
 order: 1
 status: prototype
 summary: 'An agentic, RAG-powered operations assistant for datacenter infrastructure, with real-time anomaly detection and LLM root-cause analysis built in.'
@@ -22,6 +22,11 @@ reproduce:
   expected_output: 'Live operations console with streaming telemetry, the RAG assistant, and generated incident reports.'
 receipts:
   - { label: 'repository', url: 'https://github.com/Dumee-25/OWL-Datacenter_agent' }
+home:
+  rank: 3
+  line: 'An agentic RAG assistant for datacenter infrastructure, with real-time anomaly detection and LLM root-cause analysis.'
+  meta: 'Gemini API for the assistant'
+  limit: 'Trained on a simulator, not real datacenter telemetry.'
 last_verified: 2026-06-28
 ---
 

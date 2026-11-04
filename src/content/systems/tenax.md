@@ -23,6 +23,11 @@ reproduce:
   expected_output: 'The gateway at http://127.0.0.1:18080. A call to tenax/auto is answered by the model the policy chose, named in the x-tenax-model header, with the full explanation stored.'
 receipts:
   - { label: 'repository (private for now)', url: 'https://github.com/Dumee-25/AdaptiveRouter' }
+home:
+  rank: 2
+  line: 'Apps call one OpenAI-style endpoint. Tenax drops models that break a hard rule, scores the rest on cost, speed and reliability, and stores why it chose.'
+  meta: 'Docker on one laptop, no paid APIs'
+  limit: 'No failover yet, so a failed deployment fails the request.'
 last_verified: 2026-11-03
 ---
 
