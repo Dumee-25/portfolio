@@ -12,6 +12,11 @@ open_questions:
 receipts:
   - { label: 'proceedings — NSRSIT 2026 (pp. 146–150)', url: 'https://nsrsit.nsbm.ac.lk/assets/proceedings/student_symphosium_2026.pdf' }
   - { label: 'implementation — DataSense', url: 'https://github.com/Dumee-25/DataSense' }
+home:
+  rank: 1
+  line: 'An EDA pipeline where only computed facts, never raw rows, reach the language model.'
+  meta: 'NSRSIT 2026 · Best Overall Research'
+  also: { label: 'Also a system: DataSense', href: '/systems/datasense' }
 last_verified: 2026-07-11
 ---
 

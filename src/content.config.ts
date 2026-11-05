@@ -19,6 +19,19 @@ const author = z.object({
   role: z.string().optional(),
 });
 
+// Present only on entries featured on the homepage. The homepage shows the
+// three with the lowest rank in each column, in short form. A system's limit
+// is required, so a featured system cannot drop its weakness on the way up.
+const homeLink = z.object({ label: z.string(), href: z.string() });
+const homeBase = {
+  rank: z.number(),
+  line: z.string().max(200), // the one-line finding or what it does
+  meta: z.string().max(80), // the context after the status: venue, how it runs
+  also: homeLink.optional(), // the same work under the other lens
+};
+const homeSystem = z.object({ ...homeBase, limit: z.string().max(120) });
+const homeInquiry = z.object(homeBase);
+
 const systems = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/systems' }),
   schema: z.object({
@@ -43,6 +56,7 @@ const systems = defineCollection({
       .optional(),
     receipts: z.array(receipt).min(1), // every system links to proof
     last_verified: z.coerce.date(), // honesty has a freshness date
+    home: homeSystem.optional(),
   }),
 });
 
@@ -61,6 +75,7 @@ const inquiry = defineCollection({
     open_questions: z.array(z.string()).min(1), // the honest "what we don't know yet"
     receipts: z.array(receipt).default([]),
     last_verified: z.coerce.date(),
+    home: homeInquiry.optional(),
   }),
 });
 

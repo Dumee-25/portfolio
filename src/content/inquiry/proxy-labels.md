@@ -13,6 +13,10 @@ open_questions:
   - 'How much of the six-month endpoint is the radiology pipeline? Progression calls are model output from radiology reports and are only seen when a scan happens, so the endpoint inherits whatever that model misses.'
   - 'Why does PD-L1 not come out as expected? TMB and MSI recover their known direction after immunotherapy, but PD-L1 does not reach significance in lung cancer, and its status is recorded for only 1,125 of the 2,076 treated lung patients. The null may be about recording rather than biology.'
 receipts: []
+home:
+  rank: 3
+  line: 'An audit of one hand-built response label across 24,950 patients. A model can score well by learning the label''s rules rather than predicting benefit.'
+  meta: 'Grew out of a rejected paper'
 last_verified: 2026-10-16
 ---
 

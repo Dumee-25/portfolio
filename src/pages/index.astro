@@ -2,105 +2,182 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { site, stack } from '../site';
-// Portrait served as a plain static file from public/ — no image pipeline,
-// no /_image endpoint, works on any host including Cloudflare Workers.
 
-const systems = (await getCollection('systems')).sort(
-  (a, b) => a.data.order - b.data.order
+// Featured entries carry a `home` block in their frontmatter; the three with
+// the lowest rank in each lens are shown here.
+const systems = await getCollection('systems');
+const inquiry = await getCollection('inquiry');
+const notes = (await getCollection('notes')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
-const inquiry = (await getCollection('inquiry')).sort(
-  (a, b) => a.data.order - b.data.order
-);
+
+const byRank = <T extends { data: { home?: { rank: number } } }>(xs: T[]) =>
+  xs
+    .filter((x) => x.data.home)
+    .sort((a, b) => a.data.home!.rank - b.data.home!.rank)
+    .slice(0, 3);
+
+const research = byRank(inquiry);
+const engineering = byRank(systems);
+const latestNotes = notes.slice(0, 3);
+
+const inquiryStatus: Record<string, string> = {
+  published: 'Published',
+  accepted: 'Accepted',
+  'under-review': 'Under review',
+  ongoing: 'In progress',
+  rejected: 'Rejected',
+};
+const systemStatus: Record<string, string> = {
+  prototype: 'Prototype',
+  deployed: 'Deployed',
+  archived: 'Archived',
+};
+// Green is kept for outcomes someone else signed off on.
+const isOutcome = (s: string) => ['published', 'accepted', 'deployed'].includes(s);
+
+// Only link a repository visitors can open.
+const publicRepo = (receipts: { label: string; url: string }[]) =>
+  receipts.find((r) => r.label.startsWith('repository') && !r.label.includes('private'));
+
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 ---
 
 <Base
-  title={`${site.name} — engineer-researcher`}
-  description="Dumindu Kumarapeli — Data Science undergraduate working on LLM/RAG & agentic systems, applied ML, and computer vision."
+  title={`${site.name}, engineer-researcher`}
+  description="Dumindu Kumarapeli builds ML systems and tests whether they work: LLM and RAG systems, applied modelling and computer vision."
 >
-  <!-- Hero: an argument that hands over proof — with a face, but not a "Hi, I'm —". -->
-  <section class="hero">
-    <div class="wrap hero__grid">
-      <div class="hero__text">
-        <p class="hero__kicker label">
-          <span class="dot" aria-hidden="true"></span>{site.role} · NSBM Green University
-        </p>
-        <h1 class="hero__lede">
-          I build research prototypes that <span class="hl">ship</span> — full
-          pipelines from data generation through deployment.
-        </h1>
-        <p class="hero__std">
-          I work across the full ML lifecycle — retrieval-augmented and agentic
-          LLM systems, applied modeling and statistics, and computer vision —
-          plus the backend and frontend needed to deploy them. Most of it runs
-          on a 6&nbsp;GB consumer GPU.
-        </p>
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="/systems">View the systems →</a>
-          <a class="btn" href={site.cv} download>Download CV</a>
-          <a class="btn" href={`mailto:${site.email}`}>Email me</a>
-        </div>
-        <p class="hero__honor">
-          <span class="hero__honor-badge">Best Overall Research</span>
-          <span
-            >NSRSIT 2026, for my first <a href="/inquiry/privacy-eda"
-              >published paper</a
-            > on privacy-preserving automated EDA.</span
-          >
-        </p>
-        <p class="hero__honor">
-          <span class="hero__honor-badge">Accepted, oral presentation</span>
-          <span
-            >ICCMM 2026, University of Colombo, for <a
-              href="/inquiry/dengue-timescale">a result on model reduction</a
-            > in dengue forecasting.</span
-          >
-        </p>
-        <p class="hero__exploring meta">
-          Currently exploring: CUDA acceleration · sequence models (RNN/LSTM) ·
-          production LLM/RAG pipelines.
-        </p>
-      </div>
+  <section class="wrap hero">
+    <div class="hero__text">
+      <p class="kicker">{site.role} · NSBM Green University, Sri Lanka</p>
+      <h1 class="hero__lede">I build ML systems, and I test whether they work.</h1>
+      <p class="hero__std">
+        LLM and RAG systems, applied modelling and computer vision, built end to
+        end from data to deployment. Most of it runs on a 6&nbsp;GB laptop GPU.
+      </p>
 
-      <figure class="hero__portrait">
-        <img
-          src="/dp-portrait.jpg"
-          alt={site.name}
-          width="600"
-          height="750"
-          loading="eager"
-        />
-        <figcaption class="meta">
-          <strong>{site.name}</strong><br />Presenting at Data Storm 7.0
-        </figcaption>
-      </figure>
+      <ul class="record">
+        <li>
+          <span class="record__label">Best Overall Research</span>
+          <span>NSRSIT 2026, <a href="/inquiry/privacy-eda">privacy-preserving EDA</a></span>
+        </li>
+        <li>
+          <span class="record__label">Oral presentation, accepted</span>
+          <span>ICCMM 2026, <a href="/inquiry/dengue-timescale">dengue model reduction</a></span>
+        </li>
+      </ul>
+
+      <div class="actions">
+        <a class="btn btn--primary" href={`mailto:${site.email}`}>Email me</a>
+        <a class="btn" href={site.cv} download>Download CV</a>
+        <a class="plain" href={site.github} rel="me">GitHub ↗</a>
+        <a class="plain" href={site.linkedin} rel="me">LinkedIn ↗</a>
+      </div>
+    </div>
+
+    <figure class="hero__portrait">
+      <img
+        src="/dp-portrait.jpg"
+        alt={`${site.name} presenting at Data Storm 7.0`}
+        width="600"
+        height="750"
+        loading="eager"
+      />
+      <figcaption>Presenting at Data Storm 7.0</figcaption>
+    </figure>
+  </section>
+
+  <section class="rule-top">
+    <div class="wrap section">
+      <h2 id="work">Selected work</h2>
+      <p class="intro">Papers and systems. Some projects are both.</p>
+
+      <div class="lenses">
+        <div class="lens">
+          <div class="lens__head">
+            <h3>Research</h3>
+            <span>{inquiry.length} entries</span>
+          </div>
+          {
+            research.map((q) => {
+              const h = q.data.home!;
+              return (
+                <article class="item">
+                  <p class="item__meta">
+                    <span class:list={['item__status', { 'is-outcome': isOutcome(q.data.status) }]}>
+                      {inquiryStatus[q.data.status]}
+                    </span>{' '}
+                    · {h.meta}
+                  </p>
+                  <h4 class="item__title">
+                    <a href={`/inquiry/${q.id}`}>{q.data.title}</a>
+                  </h4>
+                  <p class="item__line">{h.line}</p>
+                  <p class="item__links">
+                    <a class="go" href={`/inquiry/${q.id}`}>Read the write-up →</a>
+                    {h.also && <a class="also" href={h.also.href}>{h.also.label}</a>}
+                  </p>
+                </article>
+              );
+            })
+          }
+          <a class="more" href="/inquiry">All research, including rejected work →</a>
+        </div>
+
+        <div class="lens">
+          <div class="lens__head">
+            <h3>Engineering</h3>
+            <span>{systems.length} systems</span>
+          </div>
+          {
+            engineering.map((s) => {
+              const h = s.data.home!;
+              const repo = publicRepo(s.data.receipts);
+              return (
+                <article class="item">
+                  <p class="item__meta">
+                    <span class:list={['item__status', { 'is-outcome': isOutcome(s.data.status) }]}>
+                      {systemStatus[s.data.status]}
+                    </span>{' '}
+                    · {h.meta}
+                  </p>
+                  <h4 class="item__title">
+                    <a href={`/systems/${s.id}`}>{s.data.title}</a>
+                  </h4>
+                  <p class="item__line">{h.line}</p>
+                  <p class="item__stack">{s.data.stack.slice(0, 6).join(' · ')}</p>
+                  <p class="item__limit">
+                    <span>Limit:</span> {h.limit}
+                  </p>
+                  <p class="item__links">
+                    <a class="go" href={`/systems/${s.id}`}>Case study →</a>
+                    {repo && <a class="go" href={repo.url}>Repository ↗</a>}
+                    {h.also && <a class="also" href={h.also.href}>{h.also.label}</a>}
+                  </p>
+                </article>
+              );
+            })
+          }
+          <a class="more" href="/systems">All systems →</a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- 01 Systems -->
   <section class="band">
     <div class="wrap section">
-      <div class="section__head">
-        <h2 id="systems"><span class="section__no">01</span> Systems</h2>
-        <a class="section__more" href="/systems">all systems →</a>
+      <div class="head-row">
+        <h2 id="notes">Lab log</h2>
+        <a class="more" href="/notes">All {notes.length} notes →</a>
       </div>
-      <p class="section__intro">Things that run — built end to end, from data to deployment.</p>
-      <ul class="cards">
+      <p class="intro">What I'm learning, stuck on, or got wrong.</p>
+      <ul class="log">
         {
-          systems.map((s) => (
-            <li class="card">
-              <a class="card__hit" href={`/systems/${s.id}`} aria-label={s.data.title} />
-              <div class="card__top">
-                <h3 class="card__title">{s.data.title}</h3>
-                <span class={`pill pill--${s.data.status}`}>{s.data.status}</span>
-              </div>
-              <p class="card__summary">{s.data.summary}</p>
-              <p class="card__flag">
-                <span class="card__flag-label">does not</span> {s.data.limitations[0]}
-              </p>
-              <ul class="chips chips--sm">
-                {s.data.stack.slice(0, 5).map((t) => (<li>{t}</li>))}
-              </ul>
-              <span class="card__link">Read the case study →</span>
+          latestNotes.map((n) => (
+            <li>
+              <time datetime={n.data.date.toISOString().slice(0, 10)}>{fmtDate(n.data.date)}</time>
+              <a href={`/notes#${n.id}`}>{n.data.title}</a>
             </li>
           ))
         }
@@ -108,407 +185,183 @@ const inquiry = (await getCollection('inquiry')).sort(
     </div>
   </section>
 
-  <!-- 02 Inquiry -->
   <section class="wrap section">
-    <div class="section__head">
-      <h2 id="inquiry"><span class="section__no">02</span> Inquiry</h2>
-      <a class="section__more" href="/inquiry">all inquiry →</a>
-    </div>
-    <p class="section__intro">Questions asked — across privacy-preserving ML, epidemiological forecasting, medical AI, and reinforcement learning.</p>
-    <ul class="inq-list">
+    <h2 id="stack">What I work with</h2>
+    <dl class="tools">
       {
-        inquiry.map((q) => (
-          <li>
-            <a href={`/inquiry/${q.id}`}>{q.data.title}</a>
-            <span class={`pill pill--${q.data.status}`}>{q.data.status}</span>
-          </li>
+        stack.map((g) => (
+          <div>
+            <dt>{g.group}</dt>
+            <dd>{g.items.join(' · ')}</dd>
+          </div>
         ))
       }
-    </ul>
+    </dl>
   </section>
 
-  <!-- 03 Stack -->
-  <section class="band">
+  <section class="rule-top">
     <div class="wrap section">
-      <div class="section__head">
-        <h2 id="stack"><span class="section__no">03</span> What I work with</h2>
+      <h2 id="contact">Contact</h2>
+      <p class="contact__text">
+        {site.affiliation}. Get in touch about research or engineering work.
+      </p>
+      <div class="actions">
+        <a class="btn btn--primary" href={`mailto:${site.email}`}>{site.email}</a>
+        <a class="btn" href={site.cv} download>Download CV</a>
+        <a class="plain" href={site.github} rel="me">GitHub ↗</a>
+        <a class="plain" href={site.linkedin} rel="me">LinkedIn ↗</a>
       </div>
-      <p class="section__intro">The tools I reach for, grouped by where they fit.</p>
-      <div class="stackgrid">
-        {
-          stack.map((g) => (
-            <div class="stackgroup">
-              <p class="stackgroup__name label">{g.group}</p>
-              <ul class="chips">
-                {g.items.map((t) => (<li>{t}</li>))}
-              </ul>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- 04 Contact -->
-  <section class="wrap section">
-    <div class="section__head">
-      <h2 id="contact"><span class="section__no">04</span> Contact</h2>
-    </div>
-    <p class="contact__text">
-      {site.affiliation}. My research interests span medical AI,
-      epidemiological forecasting, and reinforcement learning. Get in touch:
-    </p>
-    <div class="contact__links">
-      <a class="btn btn--primary" href={`mailto:${site.email}`}>{site.email}</a>
-      <a class="btn" href={site.cv} download>Download CV</a>
-      <a class="btn" href={site.linkedin} rel="me">LinkedIn</a>
-      <a class="btn" href={site.github} rel="me">GitHub</a>
     </div>
   </section>
 </Base>
 
 <style>
-  /* ---- Hero ---- */
-  .hero {
-    background-image:
-      linear-gradient(var(--grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: var(--grid-size) var(--grid-size);
-    border-bottom: var(--border-hair);
+  /* ---- Shared ---- */
+  .section {
+    padding-block: var(--space-8);
   }
-  .hero__grid {
-    display: grid;
-    gap: var(--space-6);
-    padding-block: var(--space-8) var(--space-7);
-    align-items: center;
+  .section h2 {
+    margin: 0;
   }
-  @media (min-width: 60rem) {
-    .hero__grid {
-      grid-template-columns: 1fr 340px;
-      gap: var(--space-8);
-      padding-block: var(--space-8);
-    }
+  .rule-top {
+    border-top: var(--border-hair);
   }
-  .hero__kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
-    margin-bottom: var(--space-4);
+  .band {
+    background: var(--paper-2);
+    border-block: var(--border-hair);
   }
-  .dot {
-    width: 0.6em;
-    height: 0.6em;
-    border-radius: 50%;
-    background: var(--signal);
-    box-shadow: 0 0 0 3px var(--signal-tint);
-  }
-  .hero__lede {
-    max-width: 20ch;
-    font-size: var(--step-4);
-  }
-  .hl {
-    color: var(--signal);
-    font-style: italic;
-  }
-  .hero__std {
-    max-width: 58ch;
-    margin-top: var(--space-5);
-    color: var(--ink);
-  }
-  .hero__cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-5);
-  }
-  .hero__honor {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2) var(--space-3);
-    max-width: 54ch;
-    margin-top: var(--space-5);
+  .intro {
+    margin-top: var(--space-2);
     font-family: var(--font-ui);
     font-size: var(--step--1);
     color: var(--muted);
+    max-width: var(--measure);
   }
-  /* Consecutive honours read as one group, not two separate claims. */
-  .hero__honor + .hero__honor {
-    margin-top: var(--space-2);
+  .head-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-5);
   }
-  .hero__honor-badge {
-    color: color-mix(in srgb, var(--signal) 70%, var(--ink));
-    background: var(--signal-tint);
-    border: 1px solid color-mix(in srgb, var(--signal) 32%, var(--rule));
-    border-left: 3px solid var(--signal);
-    border-radius: var(--radius);
-    padding: 0.25em 0.6em;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
-  .hero__honor a {
+  .more {
+    display: inline-block;
+    margin-top: var(--space-4);
+    font-family: var(--font-ui);
+    font-size: var(--step--1);
     color: var(--signal);
     text-decoration: none;
   }
-  .hero__honor a:hover {
+  .head-row .more {
+    margin-top: 0;
+  }
+  .more:hover {
     text-decoration: underline;
   }
-  .hero__exploring {
-    max-width: 54ch;
-    margin-top: var(--space-5);
-  }
 
-  .hero__portrait {
-    margin: 0;
-    justify-self: start;
-    width: 240px;
-    max-width: 70vw;
+  /* ---- Hero ---- */
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-7) var(--space-8);
+    padding-block: var(--space-8) var(--space-7);
   }
-  @media (min-width: 60rem) {
-    .hero__portrait {
-      width: 340px;
-      justify-self: end;
-    }
+  .hero__text {
+    flex: 999 1 30rem;
+    min-width: 0;
+  }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hero__lede {
+    margin-top: var(--space-4);
+    max-width: 17ch;
+    font-size: clamp(2.1rem, 1.4rem + 2.6vw, 3.4rem);
+    line-height: 1.08;
+  }
+  .hero__std {
+    margin-top: var(--space-5);
+    max-width: 54ch;
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+  .record {
+    list-style: none;
+    margin: var(--space-6) 0 0;
+    padding: var(--space-4) 0;
+    max-width: 40rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-7);
+    border-block: var(--border-hair);
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+  }
+  .record li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .record__label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--signal);
+  }
+  .record a {
+    color: var(--signal);
+    text-decoration: none;
+  }
+  .record a:hover {
+    text-decoration: underline;
+  }
+  .hero__portrait {
+    flex: 0 1 15rem;
+    margin: 0;
   }
   .hero__portrait img {
     width: 100%;
     aspect-ratio: 4 / 5;
     object-fit: cover;
     object-position: center top;
-    border: 1px solid var(--rule);
+    border: var(--border-hair);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-2);
-    filter: grayscale(0.1);
   }
   .hero__portrait figcaption {
     margin-top: var(--space-3);
-    line-height: 1.4;
-  }
-
-  /* ---- Banded sections for rhythm ---- */
-  .band {
-    background: var(--paper-2);
-    border-block: var(--border-hair);
-  }
-  .section {
-    padding-block: var(--space-7);
-  }
-  .section__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-4);
-  }
-  .section__head h2 {
-    margin: 0;
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-3);
-  }
-  .section__no {
-    font-family: var(--font-ui);
-    font-size: var(--step-0);
-    color: var(--signal);
-    font-weight: 500;
-  }
-  .section__more,
-  .card__link {
-    font-family: var(--font-ui);
-    font-size: var(--step--1);
-    text-decoration: none;
-    color: var(--signal);
-    white-space: nowrap;
-  }
-  .section__more:hover {
-    text-decoration: underline;
-  }
-  .section__intro {
-    max-width: var(--measure);
-    color: var(--muted);
-    margin-top: var(--space-2);
-  }
-
-  /* ---- Cards ---- */
-  .cards {
-    list-style: none;
-    padding: 0;
-    margin: var(--space-5) 0 0;
-    display: grid;
-    gap: var(--space-5);
-    grid-template-columns: 1fr;
-  }
-  @media (min-width: 48rem) {
-    .cards {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  .card {
-    position: relative;
-    border: var(--border-hair);
-    border-top: 3px solid var(--signal);
-    border-radius: var(--radius);
-    padding: var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    background: var(--paper);
-    box-shadow: var(--shadow-1);
-    transition: box-shadow 0.18s ease, transform 0.18s ease;
-  }
-  .card:hover {
-    box-shadow: var(--shadow-2);
-    transform: translateY(-2px);
-  }
-  /* whole-card click target without nesting links */
-  .card__hit {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  }
-  .card__top {
-    display: flex;
-    align-items: start;
-    justify-content: space-between;
-    gap: var(--space-3);
-  }
-  .card__title {
-    margin: 0;
-    font-size: var(--step-1);
-  }
-  .card__summary {
-    color: var(--ink);
-  }
-  .card__flag {
-    font-size: var(--step--1);
-    color: var(--flag);
-    background: var(--flag-tint);
-    border-left: 2px solid var(--flag);
-    border-radius: var(--radius);
-    padding: var(--space-2) var(--space-3);
-  }
-  .card__flag-label {
-    font-family: var(--font-ui);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-right: 0.4em;
-  }
-  .card__link {
-    margin-top: auto;
-    position: relative;
-    z-index: 2;
-  }
-  .card:hover .card__link {
-    text-decoration: underline;
-  }
-
-  /* ---- Chips ---- */
-  .chips {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    padding: 0;
-    margin: 0;
-  }
-  .chips li {
-    font-family: var(--font-ui);
-    font-size: var(--step--1);
-    font-weight: 500;
-    color: var(--ink);
-    border: 1px solid color-mix(in srgb, var(--muted) 50%, var(--rule));
-    border-radius: var(--radius);
-    padding: 0.25em 0.65em;
-    background: var(--paper);
-  }
-  /* Tech-stack chips: solid on-brand fill so they read clearly on the panel. */
-  .stackgroup .chips li {
-    font-size: 0.85rem;
-    color: color-mix(in srgb, var(--signal) 65%, var(--ink));
-    background: var(--signal-tint);
-    border: 1px solid color-mix(in srgb, var(--signal) 32%, var(--rule));
-    border-left: 3px solid var(--signal);
-    padding: 0.3em 0.7em;
-  }
-  .chips--sm li {
+    font-family: var(--font-mono);
     font-size: 0.75rem;
-    font-weight: 500;
-    background: var(--paper-2);
-  }
-
-  /* ---- Inquiry list ---- */
-  .inq-list {
-    list-style: none;
-    padding: 0;
-    margin: var(--space-5) 0 0;
-  }
-  .inq-list li {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-4);
-    padding: var(--space-4) 0;
-    border-bottom: var(--border-hair);
-  }
-  .inq-list li:first-child {
-    border-top: var(--border-hair);
-  }
-  .inq-list a {
-    text-decoration: none;
-    font-size: var(--step-0);
-  }
-  .inq-list a:hover {
-    text-decoration: underline;
-    text-decoration-color: var(--signal);
-  }
-
-  /* ---- Stack grid ---- */
-  .stackgrid {
-    display: grid;
-    gap: var(--space-5);
-    margin-top: var(--space-5);
-    grid-template-columns: 1fr;
-  }
-  @media (min-width: 40rem) {
-    .stackgrid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  @media (min-width: 64rem) {
-    .stackgrid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  .stackgroup__name {
-    margin-bottom: var(--space-3);
-    padding-bottom: var(--space-2);
-    border-bottom: 2px solid var(--rule);
-  }
-
-  /* ---- Contact ---- */
-  .contact__text {
-    max-width: var(--measure);
-    margin-top: var(--space-3);
-  }
-  .contact__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-4);
+    color: var(--muted);
   }
 
   /* ---- Buttons ---- */
-  .btn {
-    display: inline-block;
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+    margin-top: var(--space-6);
     font-family: var(--font-ui);
-    font-size: var(--step--1);
-    text-decoration: none;
+    font-size: 0.875rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 1.25rem;
+    box-sizing: border-box;
     color: var(--ink);
     border: 1px solid var(--ink);
     border-radius: var(--radius);
-    padding: 0.5em 1em;
-    transition: background 0.15s ease, color 0.15s ease;
+    text-decoration: none;
+    transition: background 0.15s ease;
   }
   .btn:hover {
     background: var(--paper-2);
@@ -517,9 +370,179 @@ const inquiry = (await getCollection('inquiry')).sort(
     background: var(--signal);
     border-color: var(--signal);
     color: var(--paper);
+    font-weight: 500;
   }
   .btn--primary:hover {
     background: color-mix(in srgb, var(--signal) 88%, black);
-    color: var(--paper);
+  }
+  .plain {
+    padding-block: 0.75rem;
+    text-decoration: none;
+  }
+  .plain:hover {
+    text-decoration: underline;
+  }
+
+  /* ---- Two lenses ---- */
+  .lenses {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-7) var(--space-8);
+    margin-top: var(--space-6);
+  }
+  .lens {
+    flex: 1 1 26rem;
+    min-width: 0;
+  }
+  .lens__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--ink);
+  }
+  .lens__head h3 {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .lens__head span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-block: var(--space-5);
+    border-bottom: var(--border-hair);
+  }
+  .item p {
+    margin: 0;
+  }
+  .item__meta,
+  .item__stack {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .item__status {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .item__status.is-outcome {
+    color: var(--signal);
+  }
+  .item__title {
+    margin: 0;
+    font-size: var(--step-1);
+    line-height: 1.3;
+  }
+  .item__title a {
+    text-decoration: none;
+  }
+  .item__title a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+  }
+  .item__limit {
+    font-family: var(--font-ui);
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .item__limit span {
+    color: var(--flag);
+    font-weight: 600;
+  }
+  .item .item__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-5);
+    margin-top: var(--space-1);
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+  }
+  .item__links a {
+    text-decoration: none;
+  }
+  .item__links a:hover {
+    text-decoration: underline;
+  }
+  .go {
+    color: var(--signal);
+  }
+  .also {
+    color: var(--muted);
+  }
+
+  /* ---- Lab log ---- */
+  .log {
+    list-style: none;
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    border-top: var(--border-hair);
+  }
+  .log li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-5);
+    padding-block: var(--space-4);
+    border-bottom: var(--border-hair);
+  }
+  .log time {
+    flex: 0 0 7.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .log a {
+    flex: 1 1 20rem;
+    font-size: var(--step-1);
+    text-decoration: none;
+  }
+  .log a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+  }
+
+  /* ---- Tools ---- */
+  .tools {
+    margin: var(--space-5) 0 0;
+    border-top: var(--border-hair);
+  }
+  .tools div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-5);
+    padding-block: var(--space-3);
+    border-bottom: var(--border-hair);
+  }
+  .tools dt {
+    flex: 0 0 11rem;
+    padding-top: 2px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .tools dd {
+    flex: 1 1 18rem;
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.9375rem;
+  }
+
+  /* ---- Contact ---- */
+  .contact__text {
+    margin-top: var(--space-3);
+    max-width: var(--measure);
   }
 </style>

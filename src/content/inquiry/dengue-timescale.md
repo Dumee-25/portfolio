@@ -13,6 +13,10 @@ open_questions:
   - 'Where is the crossover? The standard reduction fails at a twelve-week horizon and the loop-cutting one holds, but the horizon at which the standard reduction would become safe has not been located, so the result is a warning about this operating point rather than a boundary.'
   - 'Is the re-seeding dominance real or self-inflicted? Almost every infectious mosquito in the fitted model arrives through weekly re-seeding from observed cases rather than through transmission. If that is an artefact of how the model is driven rather than a property of the system, the reduction result means something narrower than it appears to.'
 receipts: []
+home:
+  rank: 2
+  line: 'Over a twelve-week forecast the infected mosquito outlasts the infectious human by about four times, so the usual fast-mosquito simplification needs checking.'
+  meta: 'Oral presentation · ICCMM 2026, University of Colombo'
 last_verified: 2026-11-05
 ---
 
