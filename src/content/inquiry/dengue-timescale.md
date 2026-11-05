@@ -17,7 +17,7 @@ home:
   rank: 2
   line: 'Over a twelve-week forecast the infected mosquito outlasts the infectious human by about four times, so the usual fast-mosquito simplification needs checking.'
   meta: 'Oral presentation · ICCMM 2026, University of Colombo'
-last_verified: 2026-09-12
+last_verified: 2026-11-05
 ---
 
 ## The assumption I started with
@@ -96,7 +96,7 @@ wider aim.
 
 A companion paper from the same project, *A Regime Audit for Detecting
 Constraint-Artefact Reproduction Numbers in Hybrid Mechanistic-Machine Learning
-Epidemic Models*, is **submitted** to ICACT. It is the same shape of result in a
+Epidemic Models*, was submitted to ICACT and **rejected**. It is the same shape of result in a
 different place: a fitted basic reproduction number can be manufactured by the
 optimiser driving a parameter against its bound, and there is a cheap check that
 catches it before the number gets published.
