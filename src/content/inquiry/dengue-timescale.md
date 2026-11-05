@@ -13,7 +13,7 @@ open_questions:
   - 'Where is the crossover? The standard reduction fails at a twelve-week horizon and the loop-cutting one holds, but the horizon at which the standard reduction would become safe has not been located, so the result is a warning about this operating point rather than a boundary.'
   - 'Is the re-seeding dominance real or self-inflicted? Almost every infectious mosquito in the fitted model arrives through weekly re-seeding from observed cases rather than through transmission. If that is an artefact of how the model is driven rather than a property of the system, the reduction result means something narrower than it appears to.'
 receipts: []
-last_verified: 2026-09-12
+last_verified: 2026-11-05
 ---
 
 ## The assumption I started with
@@ -92,7 +92,7 @@ wider aim.
 
 A companion paper from the same project, *A Regime Audit for Detecting
 Constraint-Artefact Reproduction Numbers in Hybrid Mechanistic-Machine Learning
-Epidemic Models*, is **submitted** to ICACT. It is the same shape of result in a
+Epidemic Models*, was submitted to ICACT and **rejected**. It is the same shape of result in a
 different place: a fitted basic reproduction number can be manufactured by the
 optimiser driving a parameter against its bound, and there is a cheap check that
 catches it before the number gets published.
