@@ -1,23 +1,24 @@
 ---
 title: 'Timescale separation and model reduction in operational dengue forecasting'
 order: 3
-status: accepted
-venue: 'ICCMM 2026, the International Conference on Computational and Mathematical Modelling, hosted by the Centre for Mathematical Modelling, Department of Mathematics, Faculty of Science, University of Colombo, in collaboration with the 33rd FAI International Conference. Colombo, 12 to 14 November 2026. Accepted for oral presentation.'
+status: published
+venue: 'ICCMM 2026, the International Conference on Computational and Mathematical Modelling, hosted by the Centre for Mathematical Modelling, Department of Mathematics, Faculty of Science, University of Colombo, in collaboration with the 33rd FAI International Conference. Colombo, 12 to 14 November 2026. Abstract in the conference proceedings, p. 81 (ISBN 978-624-5518-90-6). Oral presentation.'
 authors:
-  - { name: 'Dumindu Kumarapeli', role: 'first author, presenting' }
   - { name: 'Hiruni Weerasinghe', role: 'corresponding author' }
+  - { name: 'Dumindu Kumarapeli', role: 'presenting' }
 method: 'An eight-state host-vector SEI-SEIR compartmental model coupled to an LSTM through a differentiable Runge-Kutta solver, trained end to end on district-level weekly case data. Each candidate reduction is then integrated at the same fitted parameters as the full model, so the only thing that differs between the two runs is the reduction itself.'
-summary: 'Mosquito-borne disease models are routinely simplified by assuming mosquito dynamics are too fast to matter. Over a twelve-week forecast the comparison that licenses that step inverts: the infected mosquito outlasts the infectious human by about four times. Accepted for oral presentation at ICCMM 2026.'
+summary: 'Mosquito-borne disease models are routinely simplified by assuming mosquito dynamics are too fast to matter. Over a twelve-week forecast the comparison that licenses that step inverts: the infected mosquito outlasts the infectious human by about four times. Abstract published in the ICCMM 2026 proceedings.'
 open_questions:
   - 'How much of the inversion is a property of dengue and how much is a property of these fits? The ratio was measured across 28 fitted runs of one architecture on Sri Lankan district data. Nothing yet establishes that a differently specified host-vector model on different data lands in the same place.'
   - 'Where is the crossover? The standard reduction fails at a twelve-week horizon and the loop-cutting one holds, but the horizon at which the standard reduction would become safe has not been located, so the result is a warning about this operating point rather than a boundary.'
   - 'Is the re-seeding dominance real or self-inflicted? Almost every infectious mosquito in the fitted model arrives through weekly re-seeding from observed cases rather than through transmission. If that is an artefact of how the model is driven rather than a property of the system, the reduction result means something narrower than it appears to.'
-receipts: []
+receipts:
+  - { label: 'proceedings, ICCMM 2026 (p. 81)', url: 'https://drive.google.com/file/d/16UB0JGLXri66hxNwHqS5b7d9z2kMk1zM/view' }
 home:
   rank: 2
   line: 'Over a twelve-week forecast the infected mosquito outlasts the infectious human by about four times, so the usual fast-mosquito simplification needs checking.'
-  meta: 'Oral presentation · ICCMM 2026, University of Colombo'
-last_verified: 2026-11-05
+  meta: 'Abstract and oral presentation · ICCMM 2026, University of Colombo'
+last_verified: 2026-11-17
 ---
 
 ## The assumption I started with
@@ -103,6 +104,6 @@ catches it before the number gets published.
 
 ---
 
-**Accepted for oral presentation.** The abstract will appear in the conference
-proceedings. I am giving the talk. The open questions above are the parts that
-are genuinely unsettled, not rhetorical.
+**Published.** The abstract appears in the ICCMM 2026 proceedings on page 81,
+and it was accepted as an oral presentation. The open questions
+above are the parts that are genuinely unsettled, not rhetorical.
