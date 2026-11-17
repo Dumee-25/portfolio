@@ -18,7 +18,7 @@ dynamics, enhanced with machine learning for short-term prediction and spatial
 risk mapping across Sri Lanka. The aim is a framework that is reproducible and
 honest about its forecast horizon, not a single headline accuracy number.
 
-One result has come out of this work and been accepted for oral presentation:
+One result has come out of this work and been published as a conference abstract:
 [timescale separation and model reduction](/inquiry/dengue-timescale), on why
 the usual step of simplifying the mosquito out of the model does not hold at a
 forecasting horizon.
